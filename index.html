@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AROMA SUNÉ · 睡眠健康评估</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: #f5efe9; color: #2c3e2f; padding: 16px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .lang-bar { text-align: right; margin-bottom: 16px; display: flex; justify-content: flex-end; gap: 8px; }
+        .lang-btn { background: white; border: 1px solid #c0cfb5; padding: 6px 12px; border-radius: 40px; font-size: 0.75rem; cursor: pointer; color: #2c5a2e; }
+        .lang-btn.active { background: #2d4a3e; color: white; }
+        .card { background: white; border-radius: 32px; padding: 24px; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; color: #2a4b3c; margin-bottom: 8px; }
+        .btn { background: #2d4a3e; color: white; border: none; width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; border-radius: 40px; cursor: pointer; margin: 8px 0; }
+        .question { margin-bottom: 20px; }
+        .question label { font-weight: 600; display: block; margin-bottom: 6px; font-size: 0.85rem; }
+        select, input { width: 100%; padding: 10px 12px; border: 1px solid #ddd8d0; border-radius: 24px; font-size: 0.9rem; }
+        .consent-box { background: #faf8f5; border-radius: 20px; padding: 16px; margin: 20px 0; }
+        .consent-line { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .small-text { font-size: 0.65rem; color: #8f9b8a; }
+        footer { text-align: center; font-size: 0.65rem; color: #b2b9ab; margin-top: 20px; }
+        [data-lang="zh"] .lang-zh, [data-lang="en"] .lang-en, [data-lang="ms"] .lang-ms, [data-lang="id"] .lang-id { display: block; }
+        [data-lang="zh"] .lang-en, [data-lang="zh"] .lang-ms, [data-lang="zh"] .lang-id,
+        [data-lang="en"] .lang-zh, [data-lang="en"] .lang-ms, [data-lang="en"] .lang-id,
+        [data-lang="ms"] .lang-zh, [data-lang="ms"] .lang-en, [data-lang="ms"] .lang-id,
+        [data-lang="id"] .lang-zh, [data-lang="id"] .lang-en, [data-lang="id"] .lang-ms { display: none; }
+    </style>
+</head>
+<body data-lang="zh">
+<div class="container">
+    <div class="lang-bar">
+        <button class="lang-btn" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="ms">Melayu</button>
+        <button class="lang-btn" data-lang="id">Indonesia</button>
+    </div>
+
+    <div class="card">
+        <div class="lang-zh"><h1>🌙 AROMA SUNÉ</h1><p>睡眠健康评估 · 完成后可获得HPB积分</p></div>
+        <div class="lang-en"><h1>🌙 AROMA SUNÉ</h1><p>Sleep Health Assessment · Earn HPB points</p></div>
+        <form id="sleepForm">
+            <div class="question"><label>年龄</label><select id="age"><option value="">请选择</option><option value="40-44">40-44岁</option><option value="45-49">45-49岁</option><option value="50-54">50-54岁</option><option value="55-60">55-60岁</option></select></div>
+            <div class="question"><label>绝经状态</label><select id="menopause"><option value="">请选择</option><option value="绝经前">绝经前</option><option value="围绝经期">围绝经期</option><option value="绝经后">绝经后</option></select></div>
+            <div class="question"><label>1. 上床时间</label><input type="time" id="q1" required></div>
+            <div class="question"><label>2. 入睡时长</label><select id="q2"><option value="">选择</option><option value="0">≤15分钟</option><option value="1">16-30分钟</option><option value="2">31-60分钟</option><option value="3">>60分钟</option></select></div>
+            <div class="question"><label>3. 起床时间</label><input type="time" id="q3" required></div>
+            <div class="question"><label>4. 实际睡眠时长</label><select id="q4"><option value="">选择</option><option value="0">>7小时</option><option value="1">6-7小时</option><option value="2">5-6小时</option><option value="3"><5小时</option></select></div>
+            <div class="question"><label>5. 睡眠质量自评</label><select id="q5"><option value="">选择</option><option value="0">很好</option><option value="1">尚可</option><option value="2">较差</option><option value="3">很差</option></select></div>
+            <div class="question"><label>6. 入睡困难频率</label><select id="q6"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>7. 夜间醒来频率</label><select id="q7"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>8. 起床上厕所频率</label><select id="q8"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>9. 呼吸不畅频率</label><select id="q9"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>10. 咳嗽/打鼾频率</label><select id="q10"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>11. 感觉冷频率</label><select id="q11"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>12. 感觉热频率</label><select id="q12"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>13. 做噩梦频率</label><select id="q13"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>14. 疼痛频率</label><select id="q14"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>15. 其他干扰因素</label><input type="text" id="q15" placeholder="可选"></div>
+            <div class="question"><label>16. 安眠药使用频率</label><select id="q16"><option value="">选择</option><option value="0">无</option><option value="1"><1次/周</option><option value="2">1-2次/周</option><option value="3">≥3次/周</option></select></div>
+            <div class="question"><label>17. 阅读时打瞌睡</label><select id="ess1"><option value="">选择</option><option value="0">从不</option><option value="1">很少</option><option value="2">有时</option><option value="3">经常</option></select></div>
+            <div class="question"><label>18. 交谈时打瞌睡</label><select id="ess2"><option value="">选择</option><option value="0">从不</option><option value="1">很少</option><option value="2">有时</option><option value="3">经常</option></select></div>
+            <div class="question"><label>19. 入睡困难严重程度</label><select id="isi1"><option value="">选择</option><option value="0">无</option><option value="1">轻度</option><option value="2">中度</option><option value="3">重度</option><option value="4">极重度</option></select></div>
+            <div class="question"><label>20. 夜间维持睡眠困难程度</label><select id="isi2"><option value="">选择</option><option value="0">无</option><option value="1">轻度</option><option value="2">中度</option><option value="3">重度</option><option value="4">极重度</option></select></div>
+            <div class="question"><label>21. 早醒问题严重程度</label><select id="isi3"><option value="">选择</option><option value="0">无</option><option value="1">轻度</option><option value="2">中度</option><option value="3">重度</option><option value="4">极重度</option></select></div>
+            <div class="question"><label>22. 对当前睡眠模式的满意程度</label><select id="isi4"><option value="">选择</option><option value="0">非常满意</option><option value="1">满意</option><option value="2">中等</option><option value="3">不满意</option><option value="4">非常不满意</option></select></div>
+            <div class="question"><label>23. 睡眠问题对生活质量的影响</label><select id="isi5"><option value="">选择</option><option value="0">完全无影响</option><option value="1">轻微</option><option value="2">中等</option><option value="3">明显</option><option value="4">非常明显</option></select></div>
+            <div class="question"><label>24. 对睡眠问题的担忧程度</label><select id="isi6"><option value="">选择</option><option value="0">完全不担心</option><option value="1">轻微</option><option value="2">中等</option><option value="3">明显</option><option value="4">非常担心</option></select></div>
+            <div class="question"><label>25. 睡眠问题对日常功能的影响</label><select id="isi7"><option value="">选择</option><option value="0">完全无影响</option><option value="1">轻微</option><option value="2">中等</option><option value="3">明显</option><option value="4">非常明显</option></select></div>
+            <div class="question"><label>📱 手机号（用于HPB积分）</label><input type="tel" id="phone" placeholder="8123 4567" required><div class="small-text">🔒 不收集NRIC · 仅用于积分发放</div></div>
+            <div class="consent-box"><div class="consent-line"><input type="checkbox" id="consentGeneral" required><label>我同意知情同意书</label></div><div class="consent-line"><input type="checkbox" id="consentRWE" required><label>我同意匿名化数据用于RWE研究</label></div></div>
+            <button type="submit" class="btn">✅ 提交并生成报告</button>
+            <div id="message" style="margin-top:12px;"></div>
+        </form>
+    </div>
+    <footer>© 2026 AROMA SUNÉ · 蚂蚁链存证 BC2026042308303484546522 · 非医疗建议</footer>
+</div>
+
+<script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxryb2H4wMjrmJXrDIkHRPNEW8KR7bnP-hh1LckUqsEc8rZTmGK7vb3osiOSBbxpEI62g/exec';
+
+    let currentLang = localStorage.getItem('aroma_lang') || 'zh';
+    document.body.setAttribute('data-lang', currentLang);
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        if(btn.getAttribute('data-lang') === currentLang) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+            currentLang = btn.getAttribute('data-lang');
+            document.body.setAttribute('data-lang', currentLang);
+            localStorage.setItem('aroma_lang', currentLang);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    document.getElementById('sleepForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msgDiv = document.getElementById('message');
+        if(!document.getElementById('consentGeneral').checked || !document.getElementById('consentRWE').checked) {
+            msgDiv.innerText = '请勾选所有同意选项';
+            return;
+        }
+        const phone = document.getElementById('phone').value.trim();
+        if(!phone) {
+            msgDiv.innerText = '请输入手机号';
+            return;
+        }
+        let psqi = 0;
+        for(let i=2;i<=16;i++) if(i!==15) psqi += parseInt(document.getElementById(`q${i}`)?.value)||0;
+        const ess = (parseInt(document.getElementById('ess1')?.value)||0)+(parseInt(document.getElementById('ess2')?.value)||0);
+        let isi = 0;
+        for(let i=1;i<=7;i++) isi += parseInt(document.getElementById(`isi${i}`)?.value)||0;
+
+        const payload = { phone, age: document.getElementById('age')?.value || '', menopause: document.getElementById('menopause')?.value || '', psqi, ess, isi,
+            q2: parseInt(document.getElementById('q2')?.value)||0, q6: parseInt(document.getElementById('q6')?.value)||0,
+            q7: parseInt(document.getElementById('q7')?.value)||0, q8: parseInt(document.getElementById('q8')?.value)||0,
+            q10: parseInt(document.getElementById('q10')?.value)||0, q17: parseInt(document.getElementById('q17')?.value)||0,
+            q18: parseInt(document.getElementById('q18')?.value)||0, q19: parseInt(document.getElementById('q19')?.value)||0, source: 'web' };
+
+        const btn = e.target;
+        const originalText = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = '提交中...';
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if(result.success) {
+                msgDiv.innerText = '✅ 提交成功！100 HPB积分将在24小时内发放';
+                msgDiv.style.color = '#1e5a2a';
+            } else {
+                msgDiv.innerText = '提交失败：' + (result.error || '未知错误');
+                msgDiv.style.color = '#b13a3a';
+            }
+        } catch(err) {
+            msgDiv.innerText = '提交失败，请检查网络';
+            msgDiv.style.color = '#b13a3a';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = originalText;
+        }
+    });
+</script>
+</body>
+</html>
