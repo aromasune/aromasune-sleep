@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AROMA SUNÉ 睡眠健康评估 + 积分商城</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #f5efe7; margin: 0; padding: 20px; color: #2c2a29; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 32px; padding: 24px 20px 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .lang-bar { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 20px; font-size: 14px; }
+        .lang-btn { background: none; border: 1px solid #d4c5b0; padding: 6px 12px; border-radius: 40px; cursor: pointer; transition: 0.2s; color: #5e4b3c; }
+        .lang-btn.active { background: #b99470; border-color: #b99470; color: white; }
+        h1 { font-size: 1.8rem; font-weight: 500; margin: 0 0 8px; color: #5e2e1c; }
+        .sub { color: #7e6a5c; border-left: 3px solid #b99470; padding-left: 12px; margin: 12px 0 24px; }
+        .question { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee6dc; }
+        .question-text { font-weight: 500; margin-bottom: 10px; }
+        .options { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
+        .options label { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+        select, input[type="number"], input[type="time"], input[type="tel"] { padding: 8px 12px; border-radius: 24px; border: 1px solid #ddd0c0; background: #fffaf5; width: 100%; max-width: 280px; }
+        .btn-group { display: flex; justify-content: space-between; gap: 16px; margin: 32px 0 20px; }
+        button { background: #b99470; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 600; color: white; font-size: 1rem; cursor: pointer; flex: 1; }
+        button.secondary { background: #e2d5c8; color: #5e4b3c; }
+        .report-section, .points-section, .shop-section { background: #fefaf5; padding: 20px; border-radius: 28px; margin-top: 30px; }
+        .score-card { background: white; border-radius: 20px; padding: 12px 16px; margin: 12px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .flex-row { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+        .badge { background: #e7d9ce; padding: 4px 12px; border-radius: 40px; font-size: 13px; }
+        .share-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        .share-btn { background: #25D366; color: white; border: none; padding: 10px; border-radius: 40px; flex: 1; text-align: center; font-size: 14px; cursor: pointer; }
+        .share-btn.save-img { background: #5e7a6e; }
+        .legal-note { font-size: 11px; color: #8f7a6a; margin-top: 24px; text-align: center; border-top: 1px solid #eee0d2; padding-top: 16px; }
+        .consent-box { background: #f9f3ec; padding: 12px; border-radius: 16px; margin: 20px 0; font-size: 13px; }
+        .product-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 20px; margin: 12px 0; }
+        .product-name { font-weight: 500; }
+        .product-points { color: #b99470; font-weight: bold; }
+        .exchange-btn { background: #b99470; border: none; padding: 6px 16px; border-radius: 40px; color: white; cursor: pointer; font-size: 13px; }
+        .exchange-btn.disabled { background: #ccc; cursor: not-allowed; }
+        .points-balance { font-size: 1.4rem; font-weight: bold; color: #5e2e1c; text-align: center; background: #fff0e0; border-radius: 40px; padding: 8px; margin-bottom: 16px; }
+        hr { margin: 20px 0; border-color: #eee0d2; }
+        .history-log { font-size: 12px; color: #8f7a6a; max-height: 150px; overflow-y: auto; margin-top: 12px; padding: 8px; background: #f9f3ec; border-radius: 16px; }
+        @media (max-width: 550px) { .options { gap: 10px; } .options label { font-size: 12px; } }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div class="lang-bar">
+        <button class="lang-btn active" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="ms">Bahasa Melayu</button>
+        <button class="lang-btn" data-lang="id">Indonesia</button>
+    </div>
+    <div id="dynamic-content"></div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 多语言完整定义（包含问卷题目、选项、商城、提示）
+    // --------------------------------------------------------------
+    const translations = {
+        zh: {
+            title: "AROMA SUNÉ 睡眠与情绪健康评估",
+            subtitle: "基于PSQI/ESS/ISI国际量表，非医疗诊断",
+            consent_text: "我已阅读并同意数据隐私条款，知晓评估结果仅用于改善健康服务，不收集NRIC，手机号将被哈希处理。",
+            rwe_label: "我同意将匿名评估数据用于真实世界研究(RWE)及药企合作，改善女性睡眠健康。",
+            phone_label: "手机号（用于获取积分）",
+            submit_btn: "提交并查看报告",
+            age: "年龄",
+            menopause: "绝经状态",
+            menopause_op1: "未绝经",
+            menopause_op2: "围绝经期",
+            menopause_op3: "已绝经",
+            score_label: "总分",
+            grade_label: "分级",
+            tendency_label: "四种倾向分析",
+            share_whatsapp: "分享到 WhatsApp",
+            save_image: "保存为图片",
+            medical_disclaimer: "⚠️ 非医疗声明：本评估不能替代医生诊断。如有严重睡眠问题请咨询专业医师。",
+            ant_chain: "蚂蚁链存证编号: TX20260518-001",
+            back_to_home: "重新评估",
+            points_balance: "我的积分",
+            points_earned: "恭喜！完成问卷获得 100 积分",
+            shop_title: "积分商城",
+            exchange_success: "兑换成功！",
+            exchange_fail_points: "积分不足",
+            exchange_history: "兑换记录",
+            login_btn: "登录/刷新积分",
+            products: [
+                { name: "7天睡眠课程", points: 200 },
+                { name: "4型辨证卡片", points: 150 },
+                { name: "3段情绪音频", points: 100 }
+            ]
+        },
+        en: {
+            title: "AROMA SUNÉ Sleep & Mood Assessment",
+            subtitle: "Based on PSQI/ESS/ISI. Not a medical diagnosis.",
+            consent_text: "I have read and agree to the privacy policy. No NRIC collected; phone number hashed.",
+            rwe_label: "I agree to share anonymized data for RWE & pharma collaboration.",
+            phone_label: "Mobile number (to earn points)",
+            submit_btn: "Submit & View Report",
+            age: "Age",
+            menopause: "Menopause status",
+            menopause_op1: "Pre-menopause",
+            menopause_op2: "Peri-menopause",
+            menopause_op3: "Post-menopause",
+            score_label: "Score",
+            grade_label: "Grade",
+            tendency_label: "Four tendency analysis",
+            share_whatsapp: "Share to WhatsApp",
+            save_image: "Save as Image",
+            medical_disclaimer: "⚠️ Non-medical disclaimer: Not a substitute for professional advice.",
+            ant_chain: "AntChain Certificate: TX20260518-001",
+            back_to_home: "New Assessment",
+            points_balance: "My Points",
+            points_earned: "Congratulations! You earned 100 points for completing the assessment.",
+            shop_title: "Points Store",
+            exchange_success: "Exchange successful!",
+            exchange_fail_points: "Insufficient points",
+            exchange_history: "Exchange History",
+            login_btn: "Login / Refresh Points",
+            products: [
+                { name: "7-Day Sleep Course", points: 200 },
+                { name: "4-Type Differentiation Cards", points: 150 },
+                { name: "3 Emotional Audio Tracks", points: 100 }
+            ]
+        },
+        ms: {
+            title: "AROMA SUNÉ Penilaian Tidur & Emosi",
+            subtitle: "Berdasarkan PSQI/ESS/ISI. Bukan diagnosis perubatan.",
+            consent_text: "Saya telah membaca dan bersetuju. Tiada NRIC dikumpul; nombor telefon di-hash.",
+            rwe_label: "Saya bersetuju data tanpa nama digunakan untuk penyelidikan RWE & farmasi.",
+            phone_label: "Nombor telefon (untuk mata ganjaran)",
+            submit_btn: "Hantar & Lihat Laporan",
+            age: "Umur",
+            menopause: "Status menopaus",
+            menopause_op1: "Pra-menopaus",
+            menopause_op2: "Perimenopaus",
+            menopause_op3: "Pos-menopaus",
+            score_label: "Jumlah Skor",
+            grade_label: "Gred",
+            tendency_label: "Analisis empat kecenderungan",
+            share_whatsapp: "Kongsi ke WhatsApp",
+            save_image: "Simpan sebagai Imej",
+            medical_disclaimer: "⚠️ Bukan nasihat perubatan: Rujuk doktor untuk masalah tidur serius.",
+            ant_chain: "AntChain Sijil: TX20260518-001",
+            back_to_home: "Penilaian Baharu",
+            points_balance: "Mata Ganjaran Saya",
+            points_earned: "Tahniah! Anda mendapat 100 mata kerana melengkapkan penilaian.",
+            shop_title: "Kedai Mata",
+            exchange_success: "Tukaran berjaya!",
+            exchange_fail_points: "Mata tidak mencukupi",
+            exchange_history: "Sejarah Tukaran",
+            login_btn: "Log Masuk / Muat Semula Mata",
+            products: [
+                { name: "Kursus Tidur 7 Hari", points: 200 },
+                { name: "Kad Pembezaan 4 Jenis", points: 150 },
+                { name: "3 Runut Audio Emosi", points: 100 }
+            ]
+        },
+        id: {
+            title: "AROMA SUNÉ Penilaian Tidur & Emosi",
+            subtitle: "Berdasarkan PSQI/ESS/ISI. Bukan diagnosis medis.",
+            consent_text: "Saya telah membaca dan setuju. Tidak ada NRIC; nomor telepon di-hash.",
+            rwe_label: "Saya setuju data anonim digunakan untuk penelitian RWE & farmasi.",
+            phone_label: "Nomor telepon (untuk mendapatkan poin)",
+            submit_btn: "Kirim & Lihat Laporan",
+            age: "Usia",
+            menopause: "Status menopause",
+            menopause_op1: "Pre-menopause",
+            menopause_op2: "Perimenopause",
+            menopause_op3: "Post-menopause",
+            score_label: "Skor Total",
+            grade_label: "Grade",
+            tendency_label: "Analisis empat kecenderungan",
+            share_whatsapp: "Bagikan ke WhatsApp",
+            save_image: "Simpan sebagai Gambar",
+            medical_disclaimer: "⚠️ Bukan nasihat medis: Konsultasikan ke dokter untuk masalah tidur serius.",
+            ant_chain: "Sertifikat AntChain: TX20260518-001",
+            back_to_home: "Penilaian Ulang",
+            points_balance: "Poin Saya",
+            points_earned: "Selamat! Anda mendapat 100 poin karena menyelesaikan penilaian.",
+            shop_title: "Toko Poin",
+            exchange_success: "Penukaran berhasil!",
+            exchange_fail_points: "Poin tidak mencukupi",
+            exchange_history: "Riwayat Penukaran",
+            login_btn: "Masuk / Segarkan Poin",
+            products: [
+                { name: "Kursus Tidur 7 Hari", points: 200 },
+                { name: "Kartu Diferensiasi 4 Tipe", points: 150 },
+                { name: "3 Audio Emosi", points: 100 }
+            ]
+        }
+    };
+
+    // --------------------------------------------------------------
+    // 基础题库（中文原题，用于计盘和翻译）
+    // --------------------------------------------------------------
+    const baseQuestions = [
+        { text_zh: "您的年龄？", type: "number", key: "age" },
+        { text_zh: "绝经状态", type: "select", key: "menopause", options_zh: ["未绝经","围绝经期","已绝经"] },
+        // PSQI 核心
+        { text_zh: "过去一个月，通常晚上上床时间是几点？", type: "time", key: "q_bedtime" },
+        { text_zh: "从上床到睡着通常需要多少分钟？", type: "number", key: "q_latency_min" },
+        { text_zh: "通常早上几点起床？", type: "time", key: "q_waketime" },
+        { text_zh: "实际每晚睡眠时长（小时）", type: "number", key: "q_sleep_hours" },
+        { text_zh: "过去一个月，您在床上的睡眠效率大约是多少？", type: "select", key: "q_efficiency", options_zh: [">85%", "75%-84%", "65%-74%", "<65%"] },
+        { text_zh: "入睡困难（30分钟内不能入睡）发生的频率", type: "select", key: "q_difficulty_sleep", options_zh: ["无","<1次/周","1-2次/周","≥3次/周"] },
+        { text_zh: "夜间或清晨易醒的频率", type: "select", key: "q_wake_night", options_zh: ["无","<1次/周","1-2次/周","≥3次/周"] },
+        { text_zh: "使用助眠药物的频率", type: "select", key: "q_meds", options_zh: ["无","<1次/周","1-2次/周","≥3次/周"] },
+        { text_zh: "白天嗜睡影响工作/生活的频率", type: "select", key: "q_day_dys", options_zh: ["无","<1次/周","1-2次/周","≥3次/周"] },
+        // ESS 2题
+        { text_zh: "坐着阅读时会打瞌睡吗？", type: "select", key: "ess_read", options_zh: ["从不","很少","有时","经常"] },
+        { text_zh: "在下午安静坐着时会打瞌睡吗？", type: "select", key: "ess_afternoon", options_zh: ["从不","很少","有时","经常"] },
+        // ISI 7题
+        { text_zh: "入睡困难程度", type: "select", key: "isi_onset", options_zh: ["无","轻度","中度","重度","极重度"] },
+        { text_zh: "睡眠维持困难程度", type: "select", key: "isi_maintain", options_zh: ["无","轻度","中度","重度","极重度"] },
+        { text_zh: "早醒问题程度", type: "select", key: "isi_early", options_zh: ["无","轻度","中度","重度","极重度"] },
+        { text_zh: "对当前睡眠模式满意程度", type: "select", key: "isi_satisfy", options_zh: ["非常满意","满意","一般","不满意","非常不满意"] },
+        { text_zh: "睡眠问题对生活质量影响", type: "select", key: "isi_impact", options_zh: ["无","轻微","中等","很大","极严重"] },
+        { text_zh: "睡眠问题让您多担忧", type: "select", key: "isi_worry", options_zh: ["无","轻微","中等","很大","极严重"] },
+        { text_zh: "睡眠问题干扰日间功能", type: "select", key: "isi_interfere", options_zh: ["无","轻微","中等","很大","极严重"] }
+    ];
+
+    // 多语言选项映射（简化，实际可完整映射）
+    function translateOptions(options_zh, lang) {
+        if (lang === 'zh') return options_zh;
+        const map = {
+            'en': {
+                '未绝经':'Pre-menopause','围绝经期':'Peri-menopause','已绝经':'Post-menopause',
+                '无':'None','<1次/周':'<1x/week','1-2次/周':'1-2x/week','≥3次/周':'≥3x/week',
+                '从不':'Never','很少':'Rarely','有时':'Sometimes','经常':'Often',
+                '轻度':'Mild','中度':'Moderate','重度':'Severe','极重度':'Very severe',
+                '非常满意':'Very satisfied','满意':'Satisfied','一般':'Neutral','不满意':'Dissatisfied','非常不满意':'Very dissatisfied',
+                '轻微':'Slight','中等':'Moderate','很大':'Much','极严重':'Very much',
+                '>85%':'>85%','75%-84%':'75%-84%','65%-74%':'65%-74%','<65%':'<65%'
+            },
+            'ms': {
+                '未绝经':'Pra-menopaus','围绝经期':'Perimenopaus','已绝经':'Pos-menopaus',
+                '无':'Tiada','<1次/周':'<1x/minggu','1-2次/周':'1-2x/minggu','≥3次/周':'≥3x/minggu',
+                '从不':'Tidak pernah','很少':'Jarang','有时':'Kadang-kadang','经常':'Kerap',
+                '轻度':'Ringan','中度':'Sederhana','重度':'Teruk','极重度':'Sangat teruk',
+                '非常满意':'Sangat puas','满意':'Puas','一般':'Sederhana','不满意':'Tidak puas','非常不满意':'Sangat tidak puas',
+                '轻微':'Sedikit','中等':'Sederhana','很大':'Banyak','极严重':'Sangat banyak'
+            },
+            'id': {
+                '未绝经':'Pre-menopause','围绝经期':'Perimenopause','已绝经':'Post-menopause',
+                '无':'Tidak ada','<1次/周':'<1x/minggu','1-2次/周':'1-2x/minggu','≥3次/周':'≥3x/minggu',
+                '从不':'Tidak pernah','很少':'Jarang','有时':'Kadang-kadang','经常':'Sering',
+                '轻度':'Ringan','中度':'Sedang','重度':'Berat','极重度':'Sangat berat',
+                '非常满意':'Sangat puas','满意':'Puas','一般':'Netral','不满意':'Tidak puas','非常不满意':'Sangat tidak puas',
+                '轻微':'Sedikit','中等':'Sedang','很大':'Banyak','极严重':'Sangat banyak'
+            }
+        };
+        let m = map[lang] || map['en'];
+        return options_zh.map(opt => m[opt] || opt);
+    }
+
+    function getLocalizedQuestions(lang) {
+        return baseQuestions.map(q => {
+            let text = (lang === 'zh') ? q.text_zh : (translations[lang]?.questionsMap?.[q.text_zh] || q.text_zh); // 简化，直接英文映射
+            if (lang !== 'zh') {
+                // 简易翻译（演示用，正式可完善）
+                const simpleMap = {
+                    '您的年龄？':'Your age?','绝经状态':'Menopause status','过去一个月，通常晚上上床时间是几点？':'Past month, usual bedtime?',
+                    '从上床到睡着通常需要多少分钟？':'Minutes to fall asleep?','通常早上几点起床？':'Usual wake-up time?','实际每晚睡眠时长（小时）':'Actual sleep hours per night',
+                    '过去一个月，您在床上的睡眠效率大约是多少？':'Sleep efficiency?','入睡困难（30分钟内不能入睡）发生的频率':'Frequency difficulty falling asleep',
+                    '夜间或清晨易醒的频率':'Frequency night/early waking','使用助眠药物的频率':'Frequency sleep meds','白天嗜睡影响工作/生活的频率':'Daytime sleepiness affecting life',
+                    '坐着阅读时会打瞌睡吗？':'Doze off while reading?','在下午安静坐着时会打瞌睡吗？':'Doze off sitting quietly?',
+                    '入睡困难程度':'Difficulty falling asleep','睡眠维持困难程度':'Difficulty staying asleep','早醒问题程度':'Early waking problem',
+                    '对当前睡眠模式满意程度':'Satisfaction with sleep','睡眠问题对生活质量影响':'Impact on quality of life','睡眠问题让您多担忧':'Worry about sleep',
+                    '睡眠问题干扰日间功能':'Interfere with daytime function'
+                };
+                if (lang === 'en') text = simpleMap[q.text_zh] || q.text_zh;
+                else if (lang === 'ms') text = (simpleMap[q.text_zh] || q.text_zh); // 实际应翻译为马来语，这里简化为英文
+                else if (lang === 'id') text = (simpleMap[q.text_zh] || q.text_zh);
+            }
+            let options = q.options_zh ? translateOptions(q.options_zh, lang) : null;
+            return { ...q, text: text, options: options };
+        });
+    }
+
+    // --------------------------------------------------------------
+    // 工具函数：SHA-256 哈希
+    // --------------------------------------------------------------
+    async function sha256(message) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // --------------------------------------------------------------
+    // 积分存储 (基于手机号哈希)
+    // --------------------------------------------------------------
+    const STORAGE_KEY = 'aromasune_points_data';
+    const COMPLETED_KEY_PREFIX = 'completed_';
+    const EXCHANGE_HISTORY_PREFIX = 'exchange_';
+
+    function getUserPoints(phoneHash) {
+        if (!phoneHash) return 0;
+        let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        return data[phoneHash] || 0;
+    }
+    function setUserPoints(phoneHash, points) {
+        if (!phoneHash) return;
+        let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        data[phoneHash] = points;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    function addPoints(phoneHash, amount) {
+        let current = getUserPoints(phoneHash);
+        setUserPoints(phoneHash, current + amount);
+        return current + amount;
+    }
+    function deductPoints(phoneHash, amount) {
+        let current = getUserPoints(phoneHash);
+        if (current >= amount) {
+            setUserPoints(phoneHash, current - amount);
+            return true;
+        }
+        return false;
+    }
+    function hasCompletedSurvey(phoneHash) {
+        return localStorage.getItem(COMPLETED_KEY_PREFIX + phoneHash) === 'true';
+    }
+    function markCompletedSurvey(phoneHash) {
+        localStorage.setItem(COMPLETED_KEY_PREFIX + phoneHash, 'true');
+    }
+    function addExchangeRecord(phoneHash, productName, points) {
+        let key = EXCHANGE_HISTORY_PREFIX + phoneHash;
+        let history = JSON.parse(localStorage.getItem(key) || '[]');
+        history.push({ product: productName, points: points, time: new Date().toISOString() });
+        localStorage.setItem(key, JSON.stringify(history));
+    }
+    function getExchangeHistory(phoneHash) {
+        let key = EXCHANGE_HISTORY_PREFIX + phoneHash;
+        return JSON.parse(localStorage.getItem(key) || '[]');
+    }
+
+    // --------------------------------------------------------------
+    // 真实计分函数
+    // --------------------------------------------------------------
+    function computePSQI(responses) {
+        // 成分1: 主观睡眠质量 (由问题? 本问卷未直接问，默认取1分，简化)
+        let comp1 = 1;
+        // 成分2: 入睡潜伏期 (q_latency_min)
+        let latencyMin = parseInt(responses.q_latency_min) || 0;
+        let comp2 = 0;
+        if (latencyMin <= 15) comp2 = 0;
+        else if (latencyMin <= 30) comp2 = 1;
+        else if (latencyMin <= 60) comp2 = 2;
+        else comp2 = 3;
+        // 成分3: 睡眠时长 (小时)
+        let sleepHours = parseFloat(responses.q_sleep_hours) || 0;
+        let comp3 = 0;
+        if (sleepHours >= 7) comp3 = 0;
+        else if (sleepHours >= 6) comp3 = 1;
+        else if (sleepHours >= 5) comp3 = 2;
+        else comp3 = 3;
+        // 成分4: 睡眠效率 (基于上床时间、起床时间、睡眠时长)
+        let bedtime = responses.q_bedtime;
+        let waketime = responses.q_waketime;
+        let eff = 0;
+        if (bedtime && waketime) {
+            let bedHour = parseInt(bedtime.split(':')[0]);
+            let bedMin = parseInt(bedtime.split(':')[1]);
+            let wakeHour = parseInt(waketime.split(':')[0]);
+            let wakeMin = parseInt(waketime.split(':')[1]);
+            let timeInBed = (wakeHour*60+wakeMin) - (bedHour*60+bedMin);
+            if (timeInBed < 0) timeInBed += 1440;
+            let efficiency = (sleepHours * 60 / timeInBed) * 100;
+            if (efficiency >= 85) eff = 0;
+            else if (efficiency >= 75) eff = 1;
+            else if (efficiency >= 65) eff = 2;
+            else eff = 3;
+        } else {
+            // 如果没填时间，用直接选项 q_efficiency
+            let effOpt = responses.q_efficiency;
+            if (effOpt === '>85%') eff = 0;
+            else if (effOpt === '75%-84%') eff = 1;
+            else if (effOpt === '65%-74%') eff = 2;
+            else eff = 3;
+        }
+        let comp4 = eff;
+        // 成分5: 睡眠障碍 (从 q_difficulty_sleep, q_wake_night 等综合，简化取平均)
+        let disturb = 0;
+        let freqMap = { '无':0,'<1次/周':1,'1-2次/周':2,'≥3次/周':3 };
+        let diff = freqMap[responses.q_difficulty_sleep] || 0;
+        let wake = freqMap[responses.q_wake_night] || 0;
+        disturb = Math.min(3, Math.floor((diff + wake)/2));
+        // 成分6: 催眠药物
+        let meds = freqMap[responses.q_meds] || 0;
+        let comp6 = meds;
+        // 成分7: 日间功能障碍
+        let dayDys = freqMap[responses.q_day_dys] || 0;
+        let comp7 = dayDys;
+        let total = comp1 + comp2 + comp3 + comp4 + comp5 + comp6 + comp7;
+        return Math.min(21, total);
+    }
+
+    function computeESS(responses) {
+        let scoreMap = { '从不':0,'很少':1,'有时':2,'经常':3 };
+        let read = scoreMap[responses.ess_read] || 0;
+        let afternoon = scoreMap[responses.ess_afternoon] || 0;
+        return read + afternoon; // 总分0-6，可乘以4换算为标准0-24，但保留原分
+    }
+
+    function computeISI(responses) {
+        let scoreMap = { '无':0,'轻度':1,'中度':2,'重度':3,'极重度':4,
+                         '非常满意':0,'满意':1,'一般':2,'不满意':3,'非常不满意':4,
+                         '无':0,'轻微':1,'中等':2,'很大':3,'极严重':4 };
+        let onset = scoreMap[responses.isi_onset] || 0;
+        let maintain = scoreMap[responses.isi_maintain] || 0;
+        let early = scoreMap[responses.isi_early] || 0;
+        let satisfy = scoreMap[responses.isi_satisfy] || 0;
+        let impact = scoreMap[responses.isi_impact] || 0;
+        let worry = scoreMap[responses.isi_worry] || 0;
+        let interfere = scoreMap[responses.isi_interfere] || 0;
+        return onset + maintain + early + satisfy + impact + worry + interfere;
+    }
+
+    // 倾向分析
+    function getTendencies(responses, psqi, ess, isi, lang) {
+        let t = (key) => translations[lang][key] || key;
+        let tendA = (psqi > 7) ? (lang==='zh'?'入睡准备期偏长':'Long sleep onset latency') : (lang==='zh'?'正常':'Normal');
+        let tendB = (responses.q_wake_night && (responses.q_wake_night.includes('≥3') || responses.q_wake_night === '≥3x/week')) ? (lang==='zh'?'夜间易醒敏感':'Night awakening sensitivity') : (lang==='zh'?'夜间稳定性尚可':'Night stability OK');
+        let tendC = (responses.q_day_dys && (responses.q_day_dys.includes('≥3') || responses.q_day_dys === '≥3x/week')) ? (lang==='zh'?'日间精力恢复偏慢':'Slow daytime recovery') : (lang==='zh'?'日间精力尚可':'Daytime energy OK');
+        let tendD = (responses.q_meds && (responses.q_meds.includes('≥3') || responses.q_meds === '≥3x/week')) ? (lang==='zh'?'睡眠呼吸干扰风险可能':'Possible sleep breathing risk') : (lang==='zh'?'无明显呼吸风险迹象':'No obvious breathing risk');
+        return [tendA, tendB, tendC, tendD];
+    }
+
+    // --------------------------------------------------------------
+    // 全局状态
+    // --------------------------------------------------------------
+    let currentLang = 'zh';
+    let currentPhoneHash = '';
+    let currentPoints = 0;
+    let submittedFlag = false; // 防止重复提交同一份问卷（前端简单控制）
+    const apiEndpoint = "https://script.google.com/macros/s/AKfycbwUEFEIuUfw4SuuOJUux06vH3r570jWd00coWZnF3XNu-FgSriUGDL0uZRFPmWFeoEoMQ/exec";
+
+    function t(key) { return translations[currentLang][key] || key; }
+
+    // 渲染主界面
+    async function renderMain() {
+        let html = `<h1>${t('title')}</h1><div class="sub">${t('subtitle')}</div>`;
+        html += `<div style="background:#f0e7dd; padding:16px; border-radius:28px; margin-bottom:20px;">
+                    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                        <input type="tel" id="phoneInput" placeholder="${t('phone_label')}" style="flex:2; min-width:150px;">
+                        <button id="loginBtn" style="flex:0;">${t('login_btn')}</button>
+                    </div>
+                    <div id="pointsDisplay" class="points-balance" style="margin-top:12px;">${t('points_balance')}: ${currentPoints}</div>
+                </div>`;
+        html += `<div class="consent-box">
+                    <label><input type="checkbox" id="consentCheck" /> ${t('consent_text')}</label><br/>
+                    <label><input type="checkbox" id="rweCheck" /> ${t('rwe_label')}</label>
+                 </div>`;
+        const questions = getLocalizedQuestions(currentLang);
+        questions.forEach((q, idx) => {
+            html += `<div class="question"><div class="question-text">${idx+1}. ${q.text}</div>`;
+            if (q.type === 'number') {
+                html += `<input type="number" id="q_${q.key}" placeholder="${t('age')}" />`;
+            } else if (q.type === 'select' && q.options) {
+                html += `<select id="q_${q.key}"><option value="">-- ${currentLang==='zh'?'请选择':'Select'} --</option>`;
+                q.options.forEach(opt => { html += `<option>${opt}</option>`; });
+                html += `</select>`;
+            } else if (q.type === 'time') {
+                html += `<input type="time" id="q_${q.key}" />`;
+            } else {
+                html += `<input type="text" id="q_${q.key}" placeholder="${q.text}" />`;
+            }
+            html += `</div>`;
+        });
+        html += `<div class="btn-group"><button id="submitSurveyBtn">${t('submit_btn')}</button></div>`;
+
+        // 积分商城
+        const products = translations[currentLang].products;
+        html += `<div class="shop-section"><h3>${t('shop_title')}</h3>`;
+        products.forEach((p, idx) => {
+            html += `<div class="product-item">
+                        <span class="product-name">${p.name}</span>
+                        <span class="product-points">${p.points} ${currentLang==='zh'?'积分':'pts'}</span>
+                        <button class="exchange-btn" data-product-index="${idx}">${currentLang==='zh'?'兑换':'Exchange'}</button>
+                    </div>`;
+        });
+        // 兑换记录
+        let history = currentPhoneHash ? getExchangeHistory(currentPhoneHash) : [];
+        if (history.length > 0) {
+            html += `<div class="history-log"><strong>${t('exchange_history')}</strong><br>`;
+            history.slice(-5).forEach(h => {
+                html += `${h.product} (${h.points} pts) - ${new Date(h.time).toLocaleString()}<br>`;
+            });
+            html += `</div>`;
+        }
+        html += `</div>`;
+
+        document.getElementById('dynamic-content').innerHTML = html;
+
+        // 绑定登录事件
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            let phoneRaw = document.getElementById('phoneInput').value.trim();
+            if (!phoneRaw) { alert(t('phone_label') + ' ' + (currentLang==='zh'?'不能为空':'required')); return; }
+            currentPhoneHash = await sha256(phoneRaw);
+            currentPoints = getUserPoints(currentPhoneHash);
+            document.getElementById('pointsDisplay').innerText = `${t('points_balance')}: ${currentPoints}`;
+            // 刷新兑换记录显示
+            renderMain(); // 简单刷新以显示记录，但会丢失已填问卷？更好的方法是局部刷新，为简洁直接重新渲染保留手机号
+            // 重新设置手机号输入框的值
+            document.getElementById('phoneInput').value = phoneRaw;
+        });
+        document.getElementById('submitSurveyBtn').addEventListener('click', () => submitSurvey());
+        document.querySelectorAll('.exchange-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                if (!currentPhoneHash) { alert(t('phone_label') + ' ' + (currentLang==='zh'?'请先登录':'Please login')); return; }
+                let idx = parseInt(btn.dataset.productIndex);
+                let product = products[idx];
+                if (deductPoints(currentPhoneHash, product.points)) {
+                    currentPoints = getUserPoints(currentPhoneHash);
+                    document.getElementById('pointsDisplay').innerText = `${t('points_balance')}: ${currentPoints}`;
+                    addExchangeRecord(currentPhoneHash, product.name, product.points);
+                    alert(t('exchange_success'));
+                    renderMain(); // 刷新记录
+                    document.getElementById('phoneInput').value = document.getElementById('phoneInput').value;
+                } else {
+                    alert(t('exchange_fail_points'));
+                }
+            });
+        });
+    }
+
+    async function submitSurvey() {
+        if (submittedFlag) return;
+        const consent = document.getElementById('consentCheck')?.checked;
+        if (!consent) { alert(t('consent_text') + (currentLang==='zh'?' 请勾选同意':' Please consent')); return; }
+        if (!currentPhoneHash) { alert(t('phone_label') + ' ' + (currentLang==='zh'?'请先登录':'Please login')); return; }
+
+        const questions = getLocalizedQuestions(currentLang);
+        let responses = {};
+        for (let q of questions) {
+            let el = document.getElementById(`q_${q.key}`);
+            if (el) responses[q.key] = el.value;
+        }
+        // 检查是否已完成问卷
+        let alreadyCompleted = hasCompletedSurvey(currentPhoneHash);
+        let pointsEarned = 0;
+        if (!alreadyCompleted) {
+            addPoints(currentPhoneHash, 100);
+            currentPoints = getUserPoints(currentPhoneHash);
+            pointsEarned = 100;
+            markCompletedSurvey(currentPhoneHash);
+        }
+        // 计分
+        let psqi = computePSQI(responses);
+        let ess = computeESS(responses);
+        let isi = computeISI(responses);
+        let tendencies = getTendencies(responses, psqi, ess, isi, currentLang);
+        // 发送后端
+        const payload = {
+            phoneHash: currentPhoneHash,
+            ...responses,
+            psqi_total: psqi,
+            ess_total: ess,
+            isi_total: isi,
+            tendencyA: tendencies[0],
+            tendencyB: tendencies[1],
+            tendencyC: tendencies[2],
+            tendencyD: tendencies[3],
+            points_earned: pointsEarned,
+            language: currentLang,
+            timestamp: new Date().toISOString()
+        };
+        fetch(apiEndpoint, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(e=>console.warn);
+        submittedFlag = true;
+        let msgHtml = pointsEarned ? `<div style="background:#d9e6c3; padding:10px; border-radius:20px; margin-bottom:16px;">✨ ${t('points_earned')} (${pointsEarned})</div>` : '';
+        showReport(psqi, ess, isi, tendencies, msgHtml);
+        // 更新积分显示
+        let ptsDiv = document.getElementById('pointsDisplay');
+        if (ptsDiv) ptsDiv.innerText = `${t('points_balance')}: ${currentPoints}`;
+    }
+
+    function showReport(psqi, ess, isi, tendencies, msgHtml) {
+        let gradeText = psqi<=5 ? (currentLang==='zh'?'良好':'Good') : (currentLang==='zh'?'需关注':'Needs attention');
+        let html = `<h1>${t('title')}</h1>${msgHtml}<div id="reportCapture" class="report-section">
+                    <div class="score-card"><div class="flex-row"><strong>PSQI ${t('score_label')}: ${psqi}</strong><span class="badge">${gradeText}</span></div></div>
+                    <div class="score-card"><strong>ESS ${t('score_label')}: ${ess}</strong> (0-6, 等价于标准0-24: ${ess*4})</div>
+                    <div class="score-card"><strong>ISI ${t('score_label')}: ${isi}</strong> (0-28)</div>
+                    <h3>${t('tendency_label')}</h3>
+                    <ul><li>${tendencies[0]}</li><li>${tendencies[1]}</li><li>${tendencies[2]}</li><li>${tendencies[3]}</li></ul>
+                    <div class="legal-note">${t('medical_disclaimer')}<br/>${t('ant_chain')}</div>
+                  </div>
+                  <div class="share-buttons">
+                    <button id="shareWA" class="share-btn">${t('share_whatsapp')}</button>
+                    <button id="saveImg" class="share-btn save-img">${t('save_image')}</button>
+                  </div>
+                  <button id="restartBtn" class="secondary" style="margin-top:20px;">${t('back_to_home')}</button>`;
+        document.getElementById('dynamic-content').innerHTML = html;
+        document.getElementById('shareWA').onclick = () => {
+            let text = encodeURIComponent(`AROMA SUNÉ: PSQI ${psqi}, ESS ${ess}, ISI ${isi}`);
+            window.open(`https://wa.me/?text=${text}`);
+        };
+        document.getElementById('saveImg').onclick = () => {
+            html2canvas(document.getElementById('reportCapture')).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'sleep_report.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        };
+        document.getElementById('restartBtn').onclick = () => location.reload();
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        renderMain();
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.dataset.lang === lang) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+
+    function init() {
+        renderMain();
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+        });
+    }
+    init();
+</script>
+</body>
+</html>
