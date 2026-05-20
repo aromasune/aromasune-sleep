@@ -61,7 +61,7 @@ aromasune-sleep/
 - 不通过 WhatsApp 传输健康信息
 - 数据仅用于 HPB 积分发放 + RWE 研究
 
----
+
 
 ## 📊 数据采集目标
 
