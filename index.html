@@ -140,7 +140,7 @@
     function getReports(phoneHash){ let key=REPORTS_PREFIX+phoneHash; return JSON.parse(localStorage.getItem(key)||'[]');}
 
     // ========== 后端 API ==========
-    const apiEndpoint = "https://script.google.com/macros/s/AKfycbwQtNbVgISiN2v7LXR_at3GZbH8DrKLP_dJP1kC3LVJxUXtKoLBmKxf4OI5yD7VO8EAKg/exec”；
+    const apiEndpoint = “https://script.google.com/macros/s/AKfycbwWY5ObicdwLdcy99rcbiq2_5sxsYb2bwDuDHd7tDTYMnjKZMZzroCnqfqj1OiXW-dymg/exec";
     let authToken = null, currentPhoneHash = null, currentPoints = 0, currentLang = 'zh', submitting = false;
 
     function t(key){ return (translations[currentLang]&&translations[currentLang][key])||key; }
