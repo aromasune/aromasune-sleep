@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AROMA SUNÉ 后端全自动诊断</title>
+</head>
+<body>
+    <h3>🔧 后端连通性诊断</h3>
+    <p>后端地址：<span id="apiUrl"></span></p>
+    <button onclick="runDiagnostic()">▶ 开始诊断</button>
+    <pre id="result" style="background:#1e1e1e; color:#d4d4d4; padding:16px; border-radius:8px; margin-top:20px; overflow:auto;">等待诊断...</pre>
+
+    <script>
+        // 这里替换成你截图中的地址（确保 /exec 结尾）
+        const API_BASE = "https://script.google.com/macros/s/AKfycbzXFwppx_WA5NexN0_3bE1N5X8ASsNS5Yg6uypGWsGmAv-VIIQeZWKGp/exec";
+        
+        document.getElementById('apiUrl').innerText = API_BASE;
+        
+        async function runDiagnostic() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = "🔍 诊断开始...\n";
+            
+            // 测试 1: 直接 fetch sendCode
+            resultDiv.innerText += "\n📡 1. 测试 sendCode 接口...\n";
+            const sendUrl = API_BASE + "?action=sendCode&phone=12345678";
+            try {
+                const res = await fetch(sendUrl);
+                const text = await res.text();
+                resultDiv.innerText += `   状态码: ${res.status}\n`;
+                if (res.status === 200) {
+                    resultDiv.innerText += `   ✅ 响应内容: ${text}\n`;
+                    try {
+                        const json = JSON.parse(text);
+                        if (json.success && json.message.includes('123456')) {
+                            resultDiv.innerText += `   ✅ 验证码接口完全正常！\n`;
+                        } else {
+                            resultDiv.innerText += `   ⚠️ 响应不是预期格式: ${text}\n`;
+                        }
+                    } catch(e) {
+                        resultDiv.innerText += `   ❌ 响应不是有效 JSON: ${text}\n`;
+                    }
+                } else {
+                    resultDiv.innerText += `   ❌ 状态码异常: ${res.status}\n`;
+                }
+            } catch (err) {
+                resultDiv.innerText += `   ❌ 请求失败: ${err.message}\n`;
+                resultDiv.innerText += `   💡 这通常意味着：\n`;
+                resultDiv.innerText += `      1. 后端 URL 无效或未部署\n`;
+                resultDiv.innerText += `      2. 网络无法访问 Google Apps Script\n`;
+                resultDiv.innerText += `      3. 浏览器/防火墙拦截了跨域请求\n`;
+            }
+            
+            // 测试 2: 测试 verify
+            resultDiv.innerText += "\n🔐 2. 测试 verify 接口...\n";
+            const verifyUrl = API_BASE + "?action=verify&phone=12345678&code=123456";
+            try {
+                const res = await fetch(verifyUrl);
+                const text = await res.text();
+                resultDiv.innerText += `   状态码: ${res.status}\n`;
+                if (res.status === 200) {
+                    resultDiv.innerText += `   ✅ 响应内容: ${text}\n`;
+                    try {
+                        const json = JSON.parse(text);
+                        if (json.status === 'success' && json.token) {
+                            resultDiv.innerText += `   ✅ 登录接口完全正常，Token 已返回！\n`;
+                        } else {
+                            resultDiv.innerText += `   ⚠️ 响应格式异常: ${text}\n`;
+                        }
+                    } catch(e) {
+                        resultDiv.innerText += `   ❌ 响应不是有效 JSON: ${text}\n`;
+                    }
+                } else {
+                    resultDiv.innerText += `   ❌ 状态码异常: ${res.status}\n`;
+                }
+            } catch (err) {
+                resultDiv.innerText += `   ❌ 请求失败: ${err.message}\n`;
+            }
+            
+            resultDiv.innerText += "\n🏁 诊断完成。\n";
+            resultDiv.innerText += "📌 如果 sendCode 或 verify 失败，请检查 Apps Script 部署设置：\n";
+            resultDiv.innerText += "   - 部署时「执行身份」必须为「我」\n";
+            resultDiv.innerText += "   - 「谁有权访问」必须为「任何人」\n";
+            resultDiv.innerText += "   - 代码中 doGet 必须包含 CORS 头\n";
+        }
+    </script>
+</body>
+</html>
