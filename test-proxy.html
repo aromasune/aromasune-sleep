@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AROMA SUNÉ 代理测试</title>
+</head>
+<body>
+    <h3>AROMA SUNÉ 代理连通性测试</h3>
+    <p>后端地址（通过代理）：<span id="apiUrl"></span></p>
+    <button onclick="testSendCode()">1. 测试发送验证码 (sendCode)</button>
+    <button onclick="testVerify()">2. 测试登录验证 (verify)</button>
+    <pre id="result" style="background:#f0f0f0; padding:10px; margin-top:20px;">点击按钮后结果将显示在这里...</pre>
+
+    <script>
+        // 使用 CORS 代理 + 你的真实后端地址
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwG3GXbpyroHZ-5glm4vXGkpgDH-z20CwkixanEvWQvmcg6KnL38ioDdLZig4Rr4Y8_Xw/exec";
+        const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
+        const API_BASE = PROXY_URL + BACKEND_URL;
+        
+        document.getElementById('apiUrl').innerText = API_BASE;
+        
+        async function testSendCode() {
+            const url = API_BASE + "?action=sendCode&phone=12345678";
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = "请求中: " + url + "\n\n";
+            try {
+                const res = await fetch(url);
+                const text = await res.text();
+                resultDiv.innerText += "✅ 响应状态: " + res.status + "\n";
+                resultDiv.innerText += "✅ 响应内容: " + text;
+            } catch (err) {
+                resultDiv.innerText += "❌ 错误: " + err.message;
+                console.error(err);
+            }
+        }
+        
+        async function testVerify() {
+            const url = API_BASE + "?action=verify&phone=12345678&code=123456";
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = "请求中: " + url + "\n\n";
+            try {
+                const res = await fetch(url);
+                const text = await res.text();
+                resultDiv.innerText += "✅ 响应状态: " + res.status + "\n";
+                resultDiv.innerText += "✅ 响应内容: " + text;
+            } catch (err) {
+                resultDiv.innerText += "❌ 错误: " + err.message;
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
