@@ -139,7 +139,7 @@
     function getReports(phoneHash){ let key=REPORTS_PREFIX+phoneHash; return JSON.parse(localStorage.getItem(key)||'[]');}
 
     // ========== 后端 API（使用 CORS 代理）==========
-    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxxmLOTzkuh_-oMtw7Aze0ZBDA8vLiLlrU4AN4mOGnVYR7Mxv1GIrC6dCWU4FUh3OIdJw/exec”；
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzz-VYHVNDje9IVq3ajafun6yPgk98jpYTy9OQjwzumeT_7unqddBfZ3uWnqTm2PJqzqw/exec”；
     const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
     const apiEndpoint = PROXY_URL + BACKEND_URL;
     
