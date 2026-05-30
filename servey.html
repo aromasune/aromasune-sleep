@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+	<title>AROMA SUNÉ · 非药物睡眠健康评估</title>
+
+	<style>
+		* { box-sizing: border-box; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+		body { background: #fefef7; margin: 0; padding: 20px; color: #2c3e2f; }
+		.container {
+			max-width: 800px; margin: 0 auto; background: white; border-radius: 32px;
+			padding: 24px 20px 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+			border: 1px solid #e9ede4;
+		}
+
+		.brand-bar {
+			display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+			margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e9ede4;
+		}
+		.logo { font-size: 1.3rem; font-weight: 500; color: #4a6a3b; letter-spacing: 1px; }
+		.trust-badge { display: flex; gap: 12px; font-size: 0.7rem; color: #6b8460; }
+
+		.lang-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; }
+		.lang-btn {
+			background: none; border: 1px solid #d4c5b0; padding: 4px 12px; border-radius: 40px;
+			cursor: pointer; transition: 0.2s; font-size: 0.8rem;
+		}
+		.lang-btn.active { background: #b99470; border-color: #b99470; color: white; }
+
+		h1 { font-size: 1.6rem; font-weight: 500; margin: 0 0 8px; color: #3c5e30; }
+		.sub {
+			color: #6b7c5e; border-left: 3px solid #b99470; padding-left: 12px;
+			margin: 12px 0 24px; font-size: 0.9rem;
+		}
+
+		.question { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee6dc; }
+		.question label { font-weight: 500; display: block; margin-bottom: 8px; }
+
+		select, input[type="number"], input[type="time"], input[type="tel"] {
+			padding: 10px 14px; border-radius: 28px; border: 1px solid #ddd0c0;
+			background: #fffaf5; width: 100%; max-width: 340px; font-size: 0.9rem;
+		}
+
+		button {
+			background: #4a6a3b; border: none; padding: 12px 28px; border-radius: 40px;
+			font-weight: 600; color: white; cursor: pointer; transition: background 0.2s; font-size: 1rem;
+		}
+		button:hover { background: #3a5a2e; }
+		button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+		.consent-box {
+			background: #f9f3ec; padding: 16px; border-radius: 20px; margin: 24px 0;
+			font-size: 0.85rem; border: 1px solid #e2e8da;
+		}
+		.consent-box a { color: #4a6a3b; }
+
+		.report {
+			background-color: #f8f8f4; padding: 1.8rem; border-radius: 24px; margin-top: 2rem;
+			border-left: 4px solid #b99470;
+		}
+		.hide { display: none; }
+
+		.toast {
+			position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+			background: #2c3e2f; color: white; padding: 10px 20px; border-radius: 40px;
+			font-size: 14px; z-index: 1100; opacity: 0; transition: opacity 0.3s;
+			pointer-events: none;
+		}
+		.toast.show { opacity: 1; }
+
+		.footer-note {
+			font-size: 0.7rem; text-align: center; margin-top: 32px; color: #8b9a7a;
+			border-top: 1px solid #e2e8da; padding-top: 20px;
+		}
+		.inline-link { color: #6b8460; text-decoration: none; margin: 0 6px; }
+
+		/* ===== Modal ===== */
+		.modal {
+			display: none;
+			position: fixed;
+			inset: 0;
+			background: rgba(0,0,0,0.55);
+			z-index: 1200;
+			align-items: center;
+			justify-content: center;
+			padding: 18px;
+		}
+		.modal.open { display: flex; }
+		.modal-content {
+			width: min(760px, 100%);
+			background: #ffffff;
+			border-radius: 28px;
+			border: 1px solid #e9ede4;
+			box-shadow: 0 18px 60px rgba(0,0,0,0.22);
+			padding: 18px 18px 14px;
+			position: relative;
+			max-height: min(78vh, 720px);
+			overflow: auto;
+		}
+		.modal-header {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 12px;
+			padding-bottom: 10px;
+			border-bottom: 1px solid #eef1ea;
+			margin-bottom: 12px;
+		}
+		.modal-title {
+			font-size: 1.05rem;
+			font-weight: 650;
+			color: #2c4a2a;
+			margin: 0;
+		}
+		.modal-close {
+			border: none;
+			background: transparent;
+			font-size: 1.6rem;
+			line-height: 1;
+			cursor: pointer;
+			color: #7b8a6c;
+			padding: 6px 10px;
+			border-radius: 12px;
+		}
+		.modal-close:hover { background: #f3f5ef; }
+		.modal-body { font-size: 0.9rem; color: #2c3e2f; line-height: 1.55; }
+		.modal-body h4 { margin: 12px 0 6px; font-size: 0.95rem; color: #2c4a2a; }
+		.modal-body ul { margin: 6px 0 10px 18px; padding: 0; }
+		.modal-body li { margin: 4px 0; }
+		.modal-body a { color: #3a5a2e; text-decoration: underline; }
+		.modal-note { font-size: 0.78rem; color: #6b7c5e; margin-top: 10px; }
+
+		@media (max-width: 600px) {
+			.container { padding: 20px 16px; }
+			.brand-bar { flex-direction: column; align-items: start; gap: 8px; }
+			select, input[type="number"], input[type="time"], input[type="tel"] { max-width: 100%; }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="brand-bar">
+			<div class="logo">AROMA SUNÉ</div>
+			<div class="trust-badge">
+				<span>⭐ 星级认证体系</span>
+				<span>🔗 19项区块链存证</span>
+				<span>🏨 HPB商户(申请中)</span>
+			</div>
+		</div>
+
+		<div class="lang-bar" id="langBar"></div>
+
+		<div id="formSection">
+			<h1 id="title">🌙 非药物睡眠健康评估</h1>
+			<div class="sub" id="subtitle">PSQI 自评 · 仅供自我节奏观察 · 非医疗诊断</div>
+
+			<div class="question">
+				<label id="q_age_label">年龄</label>
+				<input type="number" id="age" placeholder="例如：52" step="1" />
+			</div>
+
+			<div class="question">
+				<label id="q_meno_label">绝经状态</label>
+				<select id="meno">
+					<option value="pre">未绝经</option>
+					<option value="peri">围绝经期</option>
+					<option value="post">已绝经</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q1_label">1. 过去一个月，通常几点上床睡觉？</label>
+				<input type="time" id="q1" />
+			</div>
+
+			<div class="question">
+				<label id="q2_label">2. 过去一个月，通常上床后多久能睡着？</label>
+				<select id="q2">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">≤15分钟</option>
+					<option value="1">16–30分钟</option>
+					<option value="2">31–60分钟</option>
+					<option value="3">&gt;60分钟</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q3_label">3. 过去一个月，通常早上几点起床？</label>
+				<input type="time" id="q3" />
+			</div>
+
+			<div class="question">
+				<label id="q4_label">4. 过去一个月，每晚实际睡眠多少小时？</label>
+				<select id="q4">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">&gt;7小时</option>
+					<option value="1">6–7小时</option>
+					<option value="2">5–6小时</option>
+					<option value="3">&lt;5小时</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q5_label">5. 过去一个月，整体睡眠质量如何？</label>
+				<select id="q5">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">非常好</option>
+					<option value="1">较好</option>
+					<option value="2">较差</option>
+					<option value="3">很差</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q6_label">6. 过去一个月，使用助眠药物的频率？</label>
+				<select id="q6">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">从不</option>
+					<option value="1">每周&lt;1次</option>
+					<option value="2">每周1-2次</option>
+					<option value="3">每周≥3次</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q7_label">7. 过去一个月，开车/吃饭/社交时难以保持清醒的频率？</label>
+				<select id="q7">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">从不</option>
+					<option value="1">每周&lt;1次</option>
+					<option value="2">每周1-2次</option>
+					<option value="3">每周≥3次</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q8_label">8. 过去一个月，要努力打起精神完成事情的困难程度？</label>
+				<select id="q8">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">没有</option>
+					<option value="1">有一点</option>
+					<option value="2">较困难</option>
+					<option value="3">很困难</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="q9_label">9. 过去一个月，他人是否注意到您的睡眠问题？</label>
+				<select id="q9">
+					<option value="" data-i18n="selectPrompt">请选择</option>
+					<option value="0">未注意</option>
+					<option value="1">轻微</option>
+					<option value="2">有些</option>
+					<option value="3">很明显</option>
+				</select>
+			</div>
+
+			<div class="question">
+				<label id="phone_label">📱 手机号（可选，用于接收报告）</label>
+				<input type="tel" id="phone" placeholder="+65 8123 4567" />
+			</div>
+
+			<div class="consent-box">
+				<label>
+					<input type="checkbox" id="consent" />
+					<span id="consent_label"></span>
+				</label>
+			</div>
+
+			<button id="submitBtn">🌱 安静地查看报告</button>
+		</div>
+
+		<div id="reportSection" class="report hide">
+			<h3 id="reportTitle">🌙 您的睡眠节奏报告</h3>
+			<div id="reportContent"></div>
+			<button id="resetBtn" style="margin-top: 1rem; background: #b99470;">← 重新填写</button>
+		</div>
+
+		<div class="footer-note">
+			<span>🔗 <a href="#" id="privacyPolicyLink" class="inline-link">隐私政策</a></span> ·
+			<span>📧 <a href="mailto:privacy@aromasune.com" class="inline-link" id="deleteLink">数据删除请求</a></span> ·
+			<span>🌿 quietly part of WTA · WSS · WITT AP</span>
+		</div>
+	</div>
+
+	<div id="toast" class="toast"></div>
+
+	<!-- ===== Privacy Modal ===== -->
+	<div id="privacyModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+		<div class="modal-content" role="document">
+			<div class="modal-header">
+				<h3 class="modal-title" id="privacyModalTitle">隐私政策（摘要）</h3>
+				<button class="modal-close" id="privacyModalClose" type="button" aria-label="Close">×</button>
+			</div>
+			<div class="modal-body" id="privacyModalBody">
+				<!-- i18n injected -->
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// 留空则仅前端演示：不发送数据，只在控制台打印 payload
+		const BACKEND_PROXY = ""; // 例如: "https://your-domain.com/api/sleep-log"
+		const guideLink = "https://aromasune.github.io/aromasune-sleep/sleep_guide.html";
+
+		let currentLang = "zh";
+
+		const I18N = {
+			zh: {
+				langName: "中文",
+				title: "🌙 非药物睡眠健康评估",
+				subtitle: "PSQI 自评 · 仅供自我节奏观察 · 非医疗诊断",
+				reportTitle: "🌙 您的睡眠节奏报告",
+				selectPrompt: "请选择",
+
+				ageLabel: "年龄",
+				agePlaceholder: "例如：52",
+
+				menoLabel: "绝经状态",
+				meno: { pre: "未绝经", peri: "围绝经期", post: "已绝经" },
+
+				q1: "1. 过去一个月，通常几点上床睡觉？",
+				q2: "2. 过去一个月，通常上床后多久能睡着？",
+				q3: "3. 过去一个月，通常早上几点起床？",
+				q4: "4. 过去一个月，每晚实际睡眠多少小时？",
+				q5: "5. 过去一个月，整体睡眠质量如何？",
+				q6: "6. 过去一个月，使用助眠药物的频率？",
+				q7: "7. 过去一个月，开车/吃饭/社交时难以保持清醒的频率？",
+				q8: "8. 过去一个月，要努力打起精神完成事情的困难程度？",
+				q9: "9. 过去一个月，他人是否注意到您的睡眠问题？",
+
+				options: {
+					q2: ["≤15分钟", "16–30分钟", "31–60分钟", ">60分钟"],
+					q4: [">7小时", "6–7小时", "5–6小时", "<5小时"],
+					q5: ["非常好", "较好", "较差", "很差"],
+					q6: ["从不", "每周<1次", "每周1-2次", "每周≥3次"],
+					q7: ["从不", "每周<1次", "每周1-2次", "每周≥3次"],
+					q8: ["没有", "有一点", "较困难", "很困难"],
+					q9: ["未注意", "轻微", "有些", "很明显"]
+				},
+
+				phoneLabel: "📱 手机号（可选，用于接收报告）",
+				phonePlaceholder: "+65 8123 4567",
+
+				consentHtml:
+					'我已阅读并同意数据收集说明。数据将存储于Airtable（美国服务器），仅用于生成报告与匿名化服务优化。我了解可以通过 <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a> 请求访问、更正或删除我的数据。',
+
+				submitBtn: "🌱 安静地查看报告",
+				resetBtn: "← 重新填写",
+				privacyPolicy: "隐私政策",
+				deleteRequest: "数据删除请求",
+
+				toastConsentRequired: "需要同意数据收集说明",
+				toastFillRequired: "请完成所有睡眠问题后再提交",
+
+				reportThanks: "感谢您轻轻分享睡眠节奏。",
+				reportYourScore: "您的 PSQI 总分：",
+				reportNotDiagnosis: "这不是医疗诊断，只是帮助您觉察自己的节奏。",
+				reportViewGuide: "查看睡眠健康指南",
+				reportDeletion: '如需删除数据，请邮件 <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>。',
+
+				scoreBand: {
+					b0: "0–5：睡眠节奏整体平稳",
+					b1: "6–10：有一些波动，温柔关注即可",
+					b2: "11–15：睡眠可能承载了较多压力",
+					b3: "16–21：请对自己格外温柔"
+				},
+
+				interp: (score) => {
+					if (score <= 5) return "睡眠节奏整体平稳，请继续保持。";
+					if (score <= 10) return "有一些波动，温柔关注即可。";
+					if (score <= 15) return "睡眠可能承载了较多压力，建议留意日常节奏。";
+					return "请对自己格外温柔，必要时可寻求专业支持。";
+				},
+
+				privacyModalTitle: "隐私政策（摘要）",
+				privacyModalHtml: `
+					<h4>数据控制者</h4>
+					<ul>
+						<li>Royal Trade & Consultancy Pte. Ltd.（UEN: 201923477E），新加坡。</li>
+					</ul>
+
+					<h4>我们收集哪些数据</h4>
+					<ul>
+						<li>PSQI 问卷答案（含睡眠质量相关选项）。</li>
+						<li>年龄、绝经状态（如填写）。</li>
+						<li>上床/起床时间（如填写）。</li>
+						<li>手机号（可选；仅在你主动填写时收集）。</li>
+					</ul>
+
+					<h4>用途（目的限制）</h4>
+					<ul>
+						<li>生成你的自我观察报告（非医疗诊断/治疗）。</li>
+						<li>以匿名化/去标识化方式进行服务质量分析与优化。</li>
+					</ul>
+
+					<h4>存储位置与跨境传输</h4>
+					<ul>
+						<li>数据通过 Airtable 存储（美国服务器）。这意味着数据可能在新加坡以外的地区被存储或处理。</li>
+					</ul>
+
+					<h4>保留期限</h4>
+					<ul>
+						<li>最多保留 24 个月，之后将被删除或匿名化处理；如法律要求则可能延长。</li>
+					</ul>
+
+					<h4>你的权利（PDPA）</h4>
+					<ul>
+						<li>你可以请求访问、更正、删除个人数据，或撤回同意。</li>
+						<li>撤回同意不影响撤回前基于同意进行的处理；撤回后我们可能无法继续提供部分功能（例如生成/发送报告）。</li>
+					</ul>
+
+					<h4>营销/推广</h4>
+					<ul>
+						<li>我们不会将你的手机号用于营销群发；如未来需要用于推广触达，将另行取得明确同意。</li>
+					</ul>
+
+					<h4>联系与处理时限</h4>
+					<ul>
+						<li>数据权利请求邮箱：<a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></li>
+						<li>我们通常会在 30 天内回复你的请求（如需更长时间会告知原因）。</li>
+					</ul>
+
+					<div class="modal-note">
+						提示：本页面为摘要披露；如需完整政策文本，可邮件索取。
+					</div>
+				`
+			},
+
+			en: {
+				langName: "English",
+				title: "🌙 Non-Pharmaceutical Sleep Assessment",
+				subtitle: "PSQI self-reflection · not a medical diagnosis",
+				reportTitle: "🌙 Your Sleep Rhythm Report",
+				selectPrompt: "Select",
+
+				ageLabel: "Age",
+				agePlaceholder: "e.g., 52",
+
+				menoLabel: "Menopause status",
+				meno: { pre: "Pre", peri: "Peri", post: "Post" },
+
+				q1: "1. Bedtime (past month)",
+				q2: "2. Time to fall asleep",
+				q3: "3. Wake-up time",
+				q4: "4. Actual sleep hours/night",
+				q5: "5. Overall sleep quality",
+				q6: "6. Sleep medication frequency",
+				q7: "7. Trouble staying awake (driving/eating/social)",
+				q8: "8. Difficulty keeping up enthusiasm",
+				q9: "9. Sleep problem noticed by others",
+
+				options: {
+					q2: ["≤15 min", "16–30 min", "31–60 min", ">60 min"],
+					q4: [">7 hours", "6–7 hours", "5–6 hours", "<5 hours"],
+					q5: ["Very good", "Fairly good", "Poor", "Very poor"],
+					q6: ["Never", "<1/week", "1-2/week", "≥3/week"],
+					q7: ["Never", "<1/week", "1-2/week", "≥3/week"],
+					q8: ["None", "Mild", "Moderate", "Severe"],
+					q9: ["Not noticed", "Mild", "Somewhat", "Very much"]
+				},
+
+				phoneLabel: "📱 Phone (optional, to receive report)",
+				phonePlaceholder: "+65 8123 4567",
+
+				consentHtml:
+					'I have read and agree to the data notice. Data will be stored on Airtable (US servers) and used only to generate your report and to improve the service in an anonymized/de-identified manner. You may request access, correction, or deletion via <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.',
+
+				submitBtn: "🌱 View report",
+				resetBtn: "← Back to survey",
+				privacyPolicy: "Privacy",
+				deleteRequest: "Deletion request",
+
+				toastConsentRequired: "Consent is required.",
+				toastFillRequired: "Please complete all required questions.",
+
+				reportThanks: "Thank you for sharing your sleep rhythm.",
+				reportYourScore: "Your PSQI total:",
+				reportNotDiagnosis: "This is not a medical diagnosis—only a reflection tool.",
+				reportViewGuide: "View sleep guide",
+				reportDeletion: 'For deletion requests, email <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.',
+
+				scoreBand: {
+					b0: "0–5: Stable overall",
+					b1: "6–10: Some fluctuations",
+					b2: "11–15: Higher stress load",
+					b3: "16–21: Be extra gentle with yourself"
+				},
+
+				interp: (score) => {
+					if (score <= 5) return "Your sleep rhythm looks stable overall.";
+					if (score <= 10) return "Some fluctuations—gentle attention may help.";
+					if (score <= 15) return "Sleep may be carrying more stress—consider adjusting daily rhythm.";
+					return "Be extra gentle with yourself; consider professional support if needed.";
+				},
+
+				privacyModalTitle: "Privacy notice (summary)",
+				privacyModalHtml: `
+					<h4>Data Controller</h4>
+					<ul>
+						<li>Royal Trade & Consultancy Pte. Ltd. (UEN: 201923477E), Singapore.</li>
+					</ul>
+
+					<h4>Data we collect</h4>
+					<ul>
+						<li>PSQI responses (sleep-related selections).</li>
+						<li>Age and menopause status (if provided).</li>
+						<li>Bedtime / wake-up time (if provided).</li>
+						<li>Phone number (optional; only if you choose to provide it).</li>
+					</ul>
+
+					<h4>Purposes (purpose limitation)</h4>
+					<ul>
+						<li>Generate your self-reflection report (no medical diagnosis/treatment).</li>
+						<li>Analyze and improve the service in an anonymized/de-identified manner.</li>
+					</ul>
+
+					<h4>Storage & cross-border transfer</h4>
+					<ul>
+						<li>Stored via Airtable (US servers). This means your data may be stored/processed outside Singapore.</li>
+					</ul>
+
+					<h4>Retention</h4>
+					<ul>
+						<li>Up to 24 months, then deleted or anonymized, unless a longer period is required by law.</li>
+					</ul>
+
+					<h4>Your rights (PDPA)</h4>
+					<ul>
+						<li>You may request access, correction, deletion, or withdraw consent.</li>
+						<li>Withdrawal does not affect processing prior to withdrawal; after withdrawal, some features may not be available.</li>
+					</ul>
+
+					<h4>Marketing</h4>
+					<ul>
+						<li>We do not use your phone number for marketing broadcasts. If marketing contact is needed in the future, we will seek separate explicit consent.</li>
+					</ul>
+
+					<h4>Contact & response time</h4>
+					<ul>
+						<li>Email: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></li>
+						<li>We typically respond within 30 days (we will inform you if more time is needed).</li>
+					</ul>
+
+					<div class="modal-note">
+						This is a summary notice. You may request the full policy text by email.
+					</div>
+				`
+			},
+
+			// 合规 Malay / Indonesian（更正式）：
+			ms: {
+				langName: "Melayu",
+				title: "🌙 Penilaian Kesihatan Tidur Bukan Farmakologi",
+				subtitle: "Refleksi PSQI · bukan diagnosis perubatan",
+				reportTitle: "🌙 Laporan Irama Tidur Anda",
+				selectPrompt: "Sila pilih",
+
+				ageLabel: "Umur",
+				agePlaceholder: "cth: 52",
+
+				menoLabel: "Status menopaus",
+				meno: { pre: "Pra-menopaus", peri: "Peri-menopaus", post: "Pasca-menopaus" },
+
+				q1: "1. Masa masuk tidur (1 bulan terakhir)",
+				q2: "2. Tempoh masa untuk tertidur",
+				q3: "3. Masa bangun (1 bulan terakhir)",
+				q4: "4. Jam tidur sebenar setiap malam (1 bulan terakhir)",
+				q5: "5. Kualiti tidur keseluruhan (1 bulan terakhir)",
+				q6: "6. Kekerapan penggunaan ubat tidur (1 bulan terakhir)",
+				q7: "7. Sukar kekal berjaga (1 bulan terakhir)",
+				q8: "8. Kesukaran mengekalkan semangat (1 bulan terakhir)",
+				q9: "9. Orang lain menyedari masalah tidur anda? (1 bulan terakhir)",
+
+				options: {
+					q2: ["≤15 minit", "16–30 minit", "31–60 minit", ">60 minit"],
+					q4: [">7 jam", "6–7 jam", "5–6 jam", "<5 jam"],
+					q5: ["Sangat baik", "Agak baik", "Kurang baik", "Sangat kurang baik"],
+					q6: ["Tidak pernah", "<1 kali/minggu", "1–2 kali/minggu", "≥3 kali/minggu"],
+					q7: ["Tidak pernah", "<1 kali/minggu", "1–2 kali/minggu", "≥3 kali/minggu"],
+					q8: ["Tiada", "Ringan", "Sederhana", "Teruk"],
+					q9: ["Tidak disedari", "Ringan", "Sederhana", "Sangat ketara"]
+				},
+
+				phoneLabel: "📱 Nombor telefon (pilihan, untuk menerima laporan)",
+				phonePlaceholder: "+65 8123 4567",
+
+				consentHtml:
+					'Saya telah membaca dan bersetuju dengan notis pengumpulan data. Data akan disimpan melalui Airtable (pelayan di Amerika Syarikat) dan digunakan hanya untuk menjana laporan serta penambahbaikan perkhidmatan secara anonym/pseudonim. Saya boleh meminta akses, pembetulan atau pemadaman melalui <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.',
+
+				submitBtn: "🌱 Lihat laporan",
+				resetBtn: "← Isi semula",
+				privacyPolicy: "Privasi",
+				deleteRequest: "Permintaan pemadaman data",
+
+				toastConsentRequired: "Persetujuan diperlukan.",
+				toastFillRequired: "Sila lengkapkan semua soalan yang diperlukan.",
+
+				reportThanks: "Terima kasih kerana berkongsi irama tidur anda.",
+				reportYourScore: "Skor PSQI anda:",
+				reportNotDiagnosis: "Ini bukan diagnosis perubatan. Ia hanya alat refleksi diri.",
+				reportViewGuide: "Lihat panduan tidur",
+				reportDeletion: 'Untuk pemadaman data, sila e-mel <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.',
+
+				scoreBand: {
+					b0: "0–5: Stabil secara keseluruhan",
+					b1: "6–10: Terdapat sedikit turun naik",
+					b2: "11–15: Mungkin menanggung lebih tekanan",
+					b3: "16–21: Sila lebih berlembut dengan diri sendiri"
+				},
+
+				interp: (score) => {
+					if (score <= 5) return "Irama tidur anda kelihatan stabil secara keseluruhan.";
+					if (score <= 10) return "Terdapat sedikit turun naik—pemantauan lembut mungkin membantu.";
+					if (score <= 15) return "Tidur mungkin menanggung lebih tekanan—pertimbangkan pelarasan rutin harian.";
+					return "Sila lebih berlembut dengan diri sendiri; pertimbangkan sokongan profesional jika perlu.";
+				},
+
+				privacyModalTitle: "Notis Privasi (Ringkasan)",
+				privacyModalHtml: `
+					<h4>Pengawal Data</h4>
+					<ul>
+						<li>Royal Trade & Consultancy Pte. Ltd. (UEN: 201923477E), Singapura.</li>
+					</ul>
+
+					<h4>Data yang dikumpul</h4>
+					<ul>
+						<li>Jawapan PSQI (pilihan berkaitan tidur).</li>
+						<li>Umur & status menopaus (jika diisi).</li>
+						<li>Masa tidur/bangun (jika diisi).</li>
+						<li>Nombor telefon (pilihan).</li>
+					</ul>
+
+					<h4>Tujuan (had tujuan)</h4>
+					<ul>
+						<li>Menjana laporan refleksi diri (bukan diagnosis/ rawatan perubatan).</li>
+						<li>Analisis dan penambahbaikan perkhidmatan secara anonym/pseudonim.</li>
+					</ul>
+
+					<h4>Penyimpanan & pemindahan rentas sempadan</h4>
+					<ul>
+						<li>Disimpan melalui Airtable (pelayan AS). Data mungkin disimpan/diproses di luar Singapura.</li>
+					</ul>
+
+					<h4>Tempoh penyimpanan</h4>
+					<ul>
+						<li>Sehingga 24 bulan, kemudian dipadam atau dianonimkan (kecuali diwajibkan oleh undang-undang).</li>
+					</ul>
+
+					<h4>Hak anda (PDPA)</h4>
+					<ul>
+						<li>Memohon akses, pembetulan, pemadaman, atau menarik balik persetujuan.</li>
+						<li>Penarikan balik tidak menjejaskan pemprosesan sebelum tarikh penarikan balik; selepas itu, sesetengah fungsi mungkin tidak tersedia.</li>
+					</ul>
+
+					<h4>Pemasaran</h4>
+					<ul>
+						<li>Kami tidak menggunakan nombor telefon untuk pemasaran siaran. Jika diperlukan pada masa hadapan, persetujuan jelas yang berasingan akan diminta.</li>
+					</ul>
+
+					<h4>Hubungi & masa respons</h4>
+					<ul>
+						<li>E-mel: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></li>
+						<li>Kami biasanya akan memberi respons dalam 30 hari.</li>
+					</ul>
+
+					<div class="modal-note">Ini ialah ringkasan. Anda boleh meminta teks polisi penuh melalui e-mel.</div>
+				`
+			},
+
+			id: {
+				langName: "Indonesia",
+				title: "🌙 Penilaian Kesehatan Tidur Non-Farmakologis",
+				subtitle: "Refleksi PSQI · bukan diagnosis medis",
+				reportTitle: "🌙 Laporan Ritme Tidur Anda",
+				selectPrompt: "Pilih",
+
+				ageLabel: "Usia",
+				agePlaceholder: "mis: 52",
+
+				menoLabel: "Status menopause",
+				meno: { pre: "Pra-menopause", peri: "Peri-menopause", post: "Pasca-menopause" },
+
+				q1: "1. Waktu mulai tidur (1 bulan terakhir)",
+				q2: "2. Lama waktu sampai tertidur",
+				q3: "3. Waktu bangun (1 bulan terakhir)",
+				q4: "4. Jam tidur aktual per malam (1 bulan terakhir)",
+				q5: "5. Kualitas tidur keseluruhan (1 bulan terakhir)",
+				q6: "6. Frekuensi obat tidur (1 bulan terakhir)",
+				q7: "7. Sulit tetap terjaga (1 bulan terakhir)",
+				q8: "8. Sulit menjaga semangat (1 bulan terakhir)",
+				q9: "9. Orang lain memperhatikan masalah tidur? (1 bulan terakhir)",
+
+				options: {
+					q2: ["≤15 menit", "16–30 menit", "31–60 menit", ">60 menit"],
+					q4: [">7 jam", "6–7 jam", "5–6 jam", "<5 jam"],
+					q5: ["Sangat baik", "Cukup baik", "Buruk", "Sangat buruk"],
+					q6: ["Tidak pernah", "<1x/minggu", "1–2x/minggu", "≥3x/minggu"],
+					q7: ["Tidak pernah", "<1x/minggu", "1–2x/minggu", "≥3x/minggu"],
+					q8: ["Tidak", "Ringan", "Sedang", "Berat"],
+					q9: ["Tidak diperhatikan", "Ringan", "Sedang", "Sangat jelas"]
+				},
+
+				phoneLabel: "📱 Nomor telepon (opsional, untuk menerima laporan)",
+				phonePlaceholder: "+65 8123 4567",
+
+				consentHtml:
+					'Saya telah membaca dan menyetujui pemberitahuan pengumpulan data. Data disimpan melalui Airtable (server di Amerika Serikat) dan digunakan hanya untuk membuat laporan serta peningkatan layanan secara anonim/terde-identifikasi. Saya dapat meminta akses, koreksi, atau penghapusan melalui <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.',
+
+				submitBtn: "🌱 Lihat laporan",
+				resetBtn: "← Isi ulang",
+				privacyPolicy: "Privasi",
+				deleteRequest: "Permintaan penghapusan",
+
+				toastConsentRequired: "Persetujuan diperlukan.",
+				toastFillRequired: "Harap lengkapi semua pertanyaan wajib.",
+
+				reportThanks: "Terima kasih telah berbagi ritme tidur Anda.",
+				reportYourScore: "Skor PSQI Anda:",
+				reportNotDiagnosis: "Ini bukan diagnosis medis. Ini hanya alat refleksi diri.",
+				reportViewGuide: "Lihat panduan tidur",
+				reportDeletion: 'Untuk penghapusan data, silakan email <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.',
+
+				scoreBand: {
+					b0: "0–5: Stabil secara keseluruhan",
+					b1: "6–10: Ada beberapa fluktuasi",
+					b2: "11–15: Mungkin memikul lebih banyak tekanan",
+					b3: "16–21: Mohon lebih lembut pada diri sendiri"
+				},
+
+				interp: (score) => {
+					if (score <= 5) return "Ritme tidur Anda tampak stabil secara keseluruhan.";
+					if (score <= 10) return "Ada beberapa fluktuasi—pemantauan lembut mungkin membantu.";
+					if (score <= 15) return "Tidur mungkin memikul lebih banyak tekanan—pertimbangkan penyesuaian rutinitas harian.";
+					return "Mohon lebih lembut pada diri sendiri; pertimbangkan dukungan profesional bila diperlukan.";
+				},
+
+				privacyModalTitle: "Pemberitahuan Privasi (Ringkasan)",
+				privacyModalHtml: `
+					<h4>Pengendali Data</h4>
+					<ul>
+						<li>Royal Trade & Consultancy Pte. Ltd. (UEN: 201923477E), Singapura.</li>
+					</ul>
+
+					<h4>Data yang dikumpulkan</h4>
+					<ul>
+						<li>Jawaban PSQI (pilihan terkait tidur).</li>
+						<li>Usia & status menopause (jika diisi).</li>
+						<li>Waktu tidur/bangun (jika diisi).</li>
+						<li>Nomor telepon (opsional).</li>
+					</ul>
+
+					<h4>Tujuan (pembatasan tujuan)</h4>
+					<ul>
+						<li>Membuat laporan refleksi diri (bukan diagnosis/perawatan medis).</li>
+						<li>Analisis dan peningkatan layanan secara anonim/terde-identifikasi.</li>
+					</ul>
+
+					<h4>Penyimpanan & transfer lintas negara</h4>
+					<ul>
+						<li>Disimpan melalui Airtable (server AS). Data dapat disimpan/diproses di luar Singapura.</li>
+					</ul>
+
+					<h4>Retensi</h4>
+					<ul>
+						<li>Hingga 24 bulan, lalu dihapus atau dianonimkan (kecuali diwajibkan hukum).</li>
+					</ul>
+
+					<h4>Hak Anda (PDPA)</h4>
+					<ul>
+						<li>Meminta akses, koreksi, penghapusan, atau menarik persetujuan.</li>
+						<li>Penarikan persetujuan tidak memengaruhi pemrosesan sebelum penarikan; setelah itu beberapa fitur mungkin tidak tersedia.</li>
+					</ul>
+
+					<h4>Pemasaran</h4>
+					<ul>
+						<li>Kami tidak menggunakan nomor telepon untuk siaran pemasaran. Jika diperlukan di masa depan, kami akan meminta persetujuan eksplisit terpisah.</li>
+					</ul>
+
+					<h4>Kontak & waktu respons</h4>
+					<ul>
+						<li>Email: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></li>
+						<li>Kami biasanya merespons dalam 30 hari.</li>
+					</ul>
+
+					<div class="modal-note">Ini ringkasan. Anda dapat meminta teks kebijakan lengkap melalui email.</div>
+				`
+			}
+		};
+
+		function tr() { return I18N[currentLang] || I18N.zh; }
+
+		function showToast(msg, isErr = false) {
+			const toast = document.getElementById("toast");
+			toast.textContent = msg;
+			toast.style.background = isErr ? "#b91c1c" : "#2c3e2f";
+			toast.classList.add("show");
+			setTimeout(() => toast.classList.remove("show"), 3000);
+		}
+
+		function calculatePSQI() {
+			let total = 0;
+			total += parseInt(document.getElementById("q2").value, 10) || 0;
+			total += parseInt(document.getElementById("q4").value, 10) || 0;
+			total += parseInt(document.getElementById("q5").value, 10) || 0;
+			total += parseInt(document.getElementById("q6").value, 10) || 0;
+			total += parseInt(document.getElementById("q7").value, 10) || 0;
+			total += parseInt(document.getElementById("q8").value, 10) || 0;
+			total += parseInt(document.getElementById("q9").value, 10) || 0;
+			return Math.min(21, total);
+		}
+
+		async function logToBackend(payload) {
+			if (!BACKEND_PROXY) {
+				console.warn("BACKEND_PROXY not set; preview only. payload=", payload);
+				return;
+			}
+			try {
+				await fetch(BACKEND_PROXY, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(payload)
+				});
+			} catch (err) {
+				console.warn("log failed", err);
+			}
+		}
+
+		async function onSubmit() {
+			const i18n = tr();
+
+			if (!document.getElementById("consent").checked) {
+				return showToast(i18n.toastConsentRequired, true);
+			}
+
+			const required = ["q2", "q4", "q5", "q6", "q7", "q8", "q9"];
+			for (const id of required) {
+				if (!document.getElementById(id).value) {
+					return showToast(i18n.toastFillRequired, true);
+				}
+			}
+
+			const payload = {
+				phone: document.getElementById("phone").value.trim(),
+				age: document.getElementById("age").value || null,
+				meno: document.getElementById("meno").value,
+				q1: document.getElementById("q1").value || null,
+				q2: document.getElementById("q2").value,
+				q3: document.getElementById("q3").value || null,
+				q4: document.getElementById("q4").value,
+				q5: document.getElementById("q5").value,
+				q6: document.getElementById("q6").value,
+				q7: document.getElementById("q7").value,
+				q8: document.getElementById("q8").value,
+				q9: document.getElementById("q9").value,
+				psqi_total: calculatePSQI(),
+				timestamp: new Date().toISOString(),
+				lang: currentLang
+			};
+
+			await logToBackend(payload);
+
+			const score = payload.psqi_total;
+			const interpretation = i18n.interp(score);
+
+			const reportHtml = `
+				<p>${i18n.reportThanks}</p>
+				<p><strong>${i18n.reportYourScore} ${score} / 21</strong></p>
+				<p>
+					▸ ${i18n.scoreBand.b0}<br>
+					▸ ${i18n.scoreBand.b1}<br>
+					▸ ${i18n.scoreBand.b2}<br>
+					▸ ${i18n.scoreBand.b3}
+				</p>
+				<p>${interpretation}</p>
+				<p>${i18n.reportNotDiagnosis}</p>
+				<p>📘 <a href="${guideLink}" target="_blank" rel="noopener">${i18n.reportViewGuide}</a></p>
+				<p style="font-size:0.85rem; color:#6b7c5e;">${i18n.reportDeletion}</p>
+				<hr>
+				<footer style="font-size:0.7rem; color:#8b9a7a;">quietly part of WTA wellness ecosystem · connected to WSS · WITT AP</footer>
+			`;
+
+			document.getElementById("reportContent").innerHTML = reportHtml;
+			document.getElementById("formSection").classList.add("hide");
+			document.getElementById("reportSection").classList.remove("hide");
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+
+		function resetForm() {
+			document.getElementById("formSection").classList.remove("hide");
+			document.getElementById("reportSection").classList.add("hide");
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+
+		// ===== Modal helpers =====
+		const modal = document.getElementById("privacyModal");
+		const modalClose = document.getElementById("privacyModalClose");
+		const modalTitle = document.getElementById("privacyModalTitle");
+		const modalBody = document.getElementById("privacyModalBody");
+		const privacyLink = document.getElementById("privacyPolicyLink");
+
+		function openPrivacyModal() {
+			const i18n = tr();
+			modalTitle.textContent = i18n.privacyModalTitle || "Privacy";
+			modalBody.innerHTML = i18n.privacyModalHtml || "";
+			modal.classList.add("open");
+			modal.setAttribute("aria-hidden", "false");
+		}
+		function closePrivacyModal() {
+			modal.classList.remove("open");
+			modal.setAttribute("aria-hidden", "true");
+		}
+
+		function applyLanguage() {
+			const i18n = tr();
+
+			document.getElementById("title").innerText = i18n.title;
+			document.getElementById("subtitle").innerText = i18n.subtitle;
+			document.getElementById("reportTitle").innerText = i18n.reportTitle;
+
+			document.getElementById("q_age_label").innerText = i18n.ageLabel;
+			document.getElementById("age").placeholder = i18n.agePlaceholder;
+
+			document.getElementById("q_meno_label").innerText = i18n.menoLabel;
+
+			const meno = document.getElementById("meno");
+			meno.options[0].text = i18n.meno.pre;
+			meno.options[1].text = i18n.meno.peri;
+			meno.options[2].text = i18n.meno.post;
+
+			document.getElementById("q1_label").innerText = i18n.q1;
+			document.getElementById("q2_label").innerText = i18n.q2;
+			document.getElementById("q3_label").innerText = i18n.q3;
+			document.getElementById("q4_label").innerText = i18n.q4;
+			document.getElementById("q5_label").innerText = i18n.q5;
+			document.getElementById("q6_label").innerText = i18n.q6;
+			document.getElementById("q7_label").innerText = i18n.q7;
+			document.getElementById("q8_label").innerText = i18n.q8;
+			document.getElementById("q9_label").innerText = i18n.q9;
+
+			document.querySelectorAll('option[data-i18n="selectPrompt"]').forEach(opt => {
+				opt.text = i18n.selectPrompt;
+			});
+
+			const qKeys = ["q2","q4","q5","q6","q7","q8","q9"];
+			for (const q of qKeys) {
+				const sel = document.getElementById(q);
+				for (let i = 1; i <= 4; i++) {
+					sel.options[i].text = i18n.options[q][i - 1];
+				}
+			}
+
+			document.getElementById("phone_label").innerText = i18n.phoneLabel;
+			document.getElementById("phone").placeholder = i18n.phonePlaceholder;
+
+			document.getElementById("consent_label").innerHTML = i18n.consentHtml;
+
+			document.getElementById("submitBtn").innerText = i18n.submitBtn;
+			document.getElementById("resetBtn").innerText = i18n.resetBtn;
+
+			privacyLink.innerText = i18n.privacyPolicy;
+			document.getElementById("deleteLink").innerText = i18n.deleteRequest;
+
+			// 如果 modal 正在打开，切语言时同步更新 modal 文本
+			if (modal.classList.contains("open")) {
+				modalTitle.textContent = i18n.privacyModalTitle || modalTitle.textContent;
+				modalBody.innerHTML = i18n.privacyModalHtml || modalBody.innerHTML;
+			}
+		}
+
+		function setLanguage(lang) {
+			currentLang = lang;
+			applyLanguage();
+			document.querySelectorAll(".lang-btn").forEach(btn => {
+				btn.classList.toggle("active", btn.dataset.lang === lang);
+			});
+		}
+
+		function renderLangBar() {
+			const langs = [
+				{ code: "zh", name: I18N.zh.langName },
+				{ code: "en", name: I18N.en.langName },
+				{ code: "ms", name: I18N.ms.langName },
+				{ code: "id", name: I18N.id.langName }
+			];
+
+			const bar = document.getElementById("langBar");
+			bar.innerHTML = langs.map(l =>
+				`<button class="lang-btn ${currentLang === l.code ? "active" : ""}" data-lang="${l.code}" type="button">${l.name}</button>`
+			).join("");
+
+			bar.querySelectorAll(".lang-btn").forEach(btn => {
+				btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+			});
+		}
+
+		window.addEventListener("load", () => {
+			renderLangBar();
+			applyLanguage();
+
+			document.getElementById("submitBtn").addEventListener("click", onSubmit);
+			document.getElementById("resetBtn").addEventListener("click", resetForm);
+
+			privacyLink.addEventListener("click", (e) => {
+				e.preventDefault();
+				openPrivacyModal();
+			});
+
+			modalClose.addEventListener("click", closePrivacyModal);
+
+			// click outside content closes
+			modal.addEventListener("click", (e) => {
+				if (e.target === modal) closePrivacyModal();
+			});
+
+			// ESC closes
+			window.addEventListener("keydown", (e) => {
+				if (e.key === "Escape" && modal.classList.contains("open")) closePrivacyModal();
+			});
+		});
+	</script>
+</body>
+</html>
+- “会做后续触达”
+
+我就把那一段合规措辞替你改到最稳。
