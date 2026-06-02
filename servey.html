@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AROMA SUNÉ™ · Non-Pharmaceutical Sleep Assessment</title>
+
+  <style>
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    body { background: #fefef7; margin: 0; padding: 20px; color: #2c3e2f; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; border-radius: 32px; padding: 24px 20px 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1px solid #e9ede4; }
+
+    .brand-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e9ede4; }
+    .logo { font-size: 1.3rem; font-weight: 500; color: #4a6a3b; letter-spacing: 1px; }
+    .trust-badge { display: flex; gap: 12px; font-size: 0.7rem; color: #6b8460; }
+
+    .lang-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; }
+    .lang-btn { background: none; border: 1px solid #d4c5b0; padding: 4px 12px; border-radius: 40px; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
+    .lang-btn.active { background: #b99470; border-color: #b99470; color: #fff; }
+
+    h1 { font-size: 1.6rem; font-weight: 500; margin: 0 0 8px; color: #3c5e30; }
+    .sub { color: #6b7c5e; border-left: 3px solid #b99470; padding-left: 12px; margin: 12px 0 24px; font-size: 0.9rem; }
+
+    .question { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee6dc; }
+    .question label { font-weight: 500; display: block; margin-bottom: 8px; }
+
+    select, input[type="number"], input[type="time"], input[type="tel"] {
+      padding: 10px 14px;
+      border-radius: 28px;
+      border: 1px solid #ddd0c0;
+      background: #fffaf5;
+      width: 100%;
+      max-width: 300px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      background: #4a6a3b;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 1rem;
+    }
+    button:hover { background: #3a5a2e; }
+
+    .consent-box { background: #f9f3ec; padding: 16px; border-radius: 20px; margin: 24px 0; font-size: 0.85rem; border: 1px solid #e2e8da; }
+    .consent-box a { color: #4a6a3b; }
+
+    .report { background-color: #f8f8f4; padding: 1.8rem; border-radius: 24px; margin-top: 2rem; border-left: 4px solid #b99470; }
+    .hide { display: none; }
+
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #2c3e2f; color: #fff; padding: 10px 20px; border-radius: 40px;
+      font-size: 14px; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    .footer-note { font-size: 0.7rem; text-align: center; margin-top: 32px; color: #8b9a7a; border-top: 1px solid #e2e8da; padding-top: 20px; }
+    .inline-link { color: #6b8460; text-decoration: none; margin: 0 6px; }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px 16px; }
+      .brand-bar { flex-direction: column; align-items: start; gap: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="brand-bar">
+      <div class="logo">AROMA SUNÉ™</div>
+      <div class="trust-badge">
+        <span>⭐ Star-Rated System</span>
+        <span>🔗 Blockchain Certified</span>
+        <span>🏨 HPB Partner (Pending)</span>
+      </div>
+    </div>
+
+    <div class="lang-bar" id="langBar"></div>
+
+    <div id="formSection">
+      <h1 id="title">🌙 Non-Pharmaceutical Sleep Assessment</h1>
+      <div class="sub" id="subtitle">PSQI self-reflection · not a diagnosis</div>
+
+      <div class="question">
+        <label id="q_age_label">Age</label>
+        <input type="number" id="age" placeholder="e.g., 52" step="1" />
+      </div>
+
+      <div class="question">
+        <label id="q_meno_label">Menopause status</label>
+        <select id="meno">
+          <option value="pre">Pre</option>
+          <option value="peri">Peri</option>
+          <option value="post">Post</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q1_label">1. Bedtime (past month)</label>
+        <input type="time" id="q1" />
+      </div>
+
+      <div class="question">
+        <label id="q2_label">2. Time to fall asleep</label>
+        <select id="q2">
+          <option value="">Please select</option>
+          <option value="0">≤15 min</option>
+          <option value="1">16–30 min</option>
+          <option value="2">31–60 min</option>
+          <option value="3">&gt;60 min</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q3_label">3. Wake-up time</label>
+        <input type="time" id="q3" />
+      </div>
+
+      <div class="question">
+        <label id="q4_label">4. Actual sleep hours/night</label>
+        <select id="q4">
+          <option value="">Please select</option>
+          <option value="0">&gt;7 hours</option>
+          <option value="1">6–7 hours</option>
+          <option value="2">5–6 hours</option>
+          <option value="3">&lt;5 hours</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q5_label">5. Overall sleep quality</label>
+        <select id="q5">
+          <option value="">Please select</option>
+          <option value="0">Very good</option>
+          <option value="1">Fairly good</option>
+          <option value="2">Poor</option>
+          <option value="3">Very poor</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q6_label">6. Sleep medication frequency</label>
+        <select id="q6">
+          <option value="">Please select</option>
+          <option value="0">Never</option>
+          <option value="1">&lt;1/week</option>
+          <option value="2">1-2/week</option>
+          <option value="3">≥3/week</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q7_label">7. Trouble staying awake (driving/eating/social)</label>
+        <select id="q7">
+          <option value="">Please select</option>
+          <option value="0">Never</option>
+          <option value="1">&lt;1/week</option>
+          <option value="2">1-2/week</option>
+          <option value="3">≥3/week</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q8_label">8. Difficulty keeping up enthusiasm</label>
+        <select id="q8">
+          <option value="">Please select</option>
+          <option value="0">None</option>
+          <option value="1">Mild</option>
+          <option value="2">Moderate</option>
+          <option value="3">Severe</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="q9_label">9. Sleep problem noticed by others</label>
+        <select id="q9">
+          <option value="">Please select</option>
+          <option value="0">Not noticed</option>
+          <option value="1">Mildly</option>
+          <option value="2">Somewhat</option>
+          <option value="3">Very much</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label id="phone_label">📱 Phone (optional, to receive report)</label>
+        <input type="tel" id="phone" placeholder="+65 8123 4567" />
+      </div>
+
+      <div class="consent-box">
+        <label>
+          <input type="checkbox" id="consent" />
+          <span id="consent_label">
+            I consent to anonymous sleep tracking for service improvement. Data stored on Airtable (US).
+            I can request deletion via <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.
+          </span>
+        </label>
+      </div>
+
+      <div class="consent-box" style="margin-top: 8px;">
+        <label>
+          <input type="checkbox" id="donateIntent" />
+          <span id="donateLabel">🌱 I would like to donate the 10 points I earn from this survey to community health projects.</span>
+        </label>
+      </div>
+
+      <button id="submitBtn">🌱 View report quietly</button>
+    </div>
+
+    <div id="reportSection" class="report hide">
+      <h3>🌙 Your Sleep Report</h3>
+      <div id="reportContent"></div>
+      <button onclick="resetForm()" style="margin-top:1rem; background:#b99470;">← Back to survey</button>
+    </div>
+
+    <div class="footer-note">
+      <span>🔗 <a href="#" id="privacyPolicyLink" class="inline-link">Privacy Policy</a></span> ·
+      <span>📧 <a href="mailto:privacy@aromasune.com" class="inline-link">Data Deletion Request</a></span> ·
+      <span>🌿 quietly part of WTA · WSS · WITT AP</span>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ==================== Backend proxy config ====================
+    const BACKEND_PROXY = "https://aromasune-sleep.vercel.app/api/proxy";
+    const API_SECRET = "sune_sleep_2026";
+
+    // Donation rules (copy-safe constants for messaging)
+    const DONATION_RULE_TEXT_EN = "Donation mechanism: 10 credits = SGD $1 donation-equivalent, funded by AROMA SUNÉ and settled monthly, capped at SGD $300/month.";
+    const DONATION_RULE_TEXT_ZH = "捐赠机制：10 积分 = SGD $1 捐赠等值，由 AROMA SUNÉ 出资按月结算，每月上限 SGD $300。";
+
+    let currentLang = "en";
+
+    const translations = {
+      en: {
+        title: "🌙 Non-Pharmaceutical Sleep Assessment",
+        subtitle: "PSQI self-reflection · not a diagnosis",
+        age: "Age",
+        meno: "Menopause status",
+        pre: "Pre",
+        peri: "Peri",
+        post: "Post",
+        q1: "1. Bedtime (past month)",
+        q2: "2. Time to fall asleep",
+        q3: "3. Wake-up time",
+        q4: "4. Actual sleep hours/night",
+        q5: "5. Overall sleep quality",
+        q6: "6. Sleep medication frequency",
+        q7: "7. Trouble staying awake",
+        q8: "8. Difficulty keeping up enthusiasm",
+        q9: "9. Sleep problem noticed by others",
+        phone: "📱 Phone (optional, to receive report)",
+        consent: "I consent to anonymous sleep tracking for service improvement. Data stored on Airtable (US). I can request deletion via privacy@aromasune.com.",
+        donateLabel: "🌱 I would like to donate the 10 points I earn from this survey to community health projects.",
+        btn: "🌱 View report quietly",
+        back: "← Back to survey",
+        pointsNote: "10 points are AROMA SUNÉ participation credits (not HPB Healthpoints, cash, or cryptocurrency).",
+        donationNote: DONATION_RULE_TEXT_EN,
+        options: {
+          q2: ["≤15 min","16–30 min","31–60 min",">60 min"],
+          q4: [">7 hours","6–7 hours","5–6 hours","<5 hours"],
+          q5: ["Very good","Fairly good","Poor","Very poor"],
+          q6: ["Never","<1/week","1-2/week","≥3/week"],
+          q7: ["Never","<1/week","1-2/week","≥3/week"],
+          q8: ["None","Mild","Moderate","Severe"],
+          q9: ["Not noticed","Mildly","Somewhat","Very much"]
+        }
+      },
+      zh: {
+        title: "🌙 非药物睡眠健康评估",
+        subtitle: "PSQI 自评 · 仅供自我节奏观察 · 非医疗诊断",
+        age: "年龄",
+        meno: "绝经状态",
+        pre: "未绝经",
+        peri: "围绝经期",
+        post: "已绝经",
+        q1: "1. 过去一个月，通常几点上床睡觉？",
+        q2: "2. 过去一个月，通常上床后多久能睡着？",
+        q3: "3. 过去一个月，通常早上几点起床？",
+        q4: "4. 过去一个月，每晚实际睡眠多少小时？",
+        q5: "5. 过去一个月，整体睡眠质量如何？",
+        q6: "6. 过去一个月，使用助眠药物的频率？",
+        q7: "7. 过去一个月，开车/吃饭/社交时难以保持清醒的频率？",
+        q8: "8. 过去一个月，要努力打起精神完成事情的困难程度？",
+        q9: "9. 过去一个月，他人是否注意到您的睡眠问题？",
+        phone: "📱 手机号（可选，用于接收报告）",
+        consent: "我已阅读并同意数据收集说明。数据将存储于Airtable（美国服务器），仅用于匿名化的服务优化。我了解可以通过 privacy@aromasune.com 随时请求删除我的数据。",
+        donateLabel: "🌱 我愿意将本次问卷获得的 10 积分捐赠给社区健康项目。",
+        btn: "🌱 安静地查看报告",
+        back: "← 重新填写",
+        pointsNote: "10 积分为 AROMA SUNÉ 内部参与积分（不等同 HPB Healthpoints、现金或加密货币）。",
+        donationNote: DONATION_RULE_TEXT_ZH,
+        options: {
+          q2: ["≤15分钟","16–30分钟","31–60分钟",">60分钟"],
+          q4: [">7小时","6–7小时","5–6小时","<5小时"],
+          q5: ["非常好","较好","较差","很差"],
+          q6: ["从不","每周<1次","每周1-2次","每周≥3次"],
+          q7: ["从不","每周<1次","每周1-2次","每周≥3次"],
+          q8: ["没有","有一点","较困难","很困难"],
+          q9: ["未注意","轻微","有些","很明显"]
+        }
+      }
+    };
+
+    // Malay / Indonesian fallback to English
+    translations.ms = translations.en;
+    translations.id = translations.en;
+
+    function t(key, optQ, optIdx) {
+      if (optQ !== undefined) return translations[currentLang]?.options?.[optQ]?.[optIdx] || "";
+      return translations[currentLang]?.[key] || translations.en[key] || key;
+    }
+
+    function showToast(msg, isErr = false) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.style.background = isErr ? "#b91c1c" : "#2c3e2f";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function calculatePSQI() {
+      let total = 0;
+      total += parseInt(document.getElementById("q2").value) || 0;
+      total += parseInt(document.getElementById("q4").value) || 0;
+      total += parseInt(document.getElementById("q5").value) || 0;
+      total += parseInt(document.getElementById("q6").value) || 0;
+      total += parseInt(document.getElementById("q7").value) || 0;
+      total += parseInt(document.getElementById("q8").value) || 0;
+      total += parseInt(document.getElementById("q9").value) || 0;
+      return Math.min(21, total);
+    }
+
+    function getInterpretation(score) {
+      const texts = {
+        en: [
+          "Sleep rhythm is generally stable.",
+          "Some fluctuations, gentle attention is enough.",
+          "Sleep may be carrying some stress.",
+          "Please be extra gentle with yourself."
+        ],
+        zh: [
+          "睡眠节奏整体平稳。",
+          "有一些波动，温柔关注即可。",
+          "睡眠可能承载了较多压力。",
+          "请对自己格外温柔。"
+        ]
+      };
+      const lang = currentLang === "zh" ? "zh" : "en";
+      if (score <= 5) return texts[lang][0];
+      if (score <= 10) return texts[lang][1];
+      if (score <= 15) return texts[lang][2];
+      return texts[lang][3];
+    }
+
+    function sha256Hex(str) {
+      const buffer = new TextEncoder().encode(str);
+      return crypto.subtle.digest("SHA-256", buffer).then(hash => {
+        return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+      });
+    }
+
+    async function logToBackend(payload) {
+      if (!BACKEND_PROXY) { console.warn("BACKEND_PROXY not configured", payload); return; }
+      try {
+        const response = await fetch(BACKEND_PROXY, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: API_SECRET, data: payload })
+        });
+        const result = await response.json();
+        console.log("Saved:", result);
+      } catch (err) {
+        console.error("Logging failed:", err);
+      }
+    }
+
+    async function onSubmit() {
+      if (!document.getElementById("consent").checked) return showToast("Please consent to data collection", true);
+
+      const required = ["q2","q4","q5","q6","q7","q8","q9"];
+      for (let id of required) if (!document.getElementById(id).value) return showToast("Please complete all sleep questions", true);
+
+      const phoneRaw = document.getElementById("phone").value.trim();
+      let phoneHash = "";
+      if (phoneRaw) phoneHash = await sha256Hex(phoneRaw);
+      else phoneHash = await sha256Hex(String(Date.now()) + Math.random().toString());
+
+      const payload = {
+        phoneHash,
+        age: document.getElementById("age").value,
+        meno: document.getElementById("meno").value,
+        q1: document.getElementById("q1").value,
+        q2: document.getElementById("q2").value,
+        q3: document.getElementById("q3").value,
+        q4: document.getElementById("q4").value,
+        q5: document.getElementById("q5").value,
+        q6: document.getElementById("q6").value,
+        q7: document.getElementById("q7").value,
+        q8: document.getElementById("q8").value,
+        q9: document.getElementById("q9").value,
+        psqi_total: calculatePSQI(),
+        language: currentLang,
+        timestamp: new Date().toISOString(),
+        donate_intent: document.getElementById("donateIntent").checked
+        // points fixed to 10 in backend
+      };
+
+      await logToBackend(payload);
+
+      const score = payload.psqi_total;
+      const interpretation = getInterpretation(score);
+      const guideLink = "/sleep_guide.html";
+
+      const donateOn = document.getElementById("donateIntent").checked;
+      const pointsLine = donateOn
+        ? "🌱 You earned 10 points with this submission. Thank you for donating them to community health projects."
+        : "🌱 You earned 10 points with this submission. You may choose to donate your points next time.";
+
+      const reportHtml = `
+        <p>Thank you for gently sharing your sleep rhythm.</p>
+        <p><strong>Your PSQI Total Score: ${score} / 21</strong></p>
+        <p>▸ 0–5: Sleep rhythm generally stable<br>▸ 6–10: Some fluctuations, gentle attention is enough<br>▸ 11–15: Sleep may be carrying some stress<br>▸ 16–21: Please be extra gentle with yourself</p>
+        <p>${interpretation}</p>
+        <p>This is not a medical diagnosis — just a way to notice your own rhythm.</p>
+        <p>📘 <a href="${guideLink}" target="_blank" rel="noopener">View Sleep Health Guide</a></p>
+
+        <p>${pointsLine}</p>
+        <p style="font-size:0.85rem; color:#6b7c5e;">${t("pointsNote")}</p>
+        <p style="font-size:0.85rem; color:#6b7c5e;">${t("donationNote")}</p>
+
+        <p>🌱 Anytime you wish to withdraw or delete data, email <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.</p>
+        <hr><footer style="font-size:0.7rem;">quietly part of WTA wellness ecosystem · connected to WSS · WITT AP</footer>
+      `;
+
+      document.getElementById("reportContent").innerHTML = reportHtml;
+      document.getElementById("formSection").classList.add("hide");
+      document.getElementById("reportSection").classList.remove("hide");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetForm() {
+      document.getElementById("formSection").classList.remove("hide");
+      document.getElementById("reportSection").classList.add("hide");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function applyLanguage() {
+      document.getElementById("title").innerText = t("title");
+      document.getElementById("subtitle").innerText = t("subtitle");
+      document.getElementById("q_age_label").innerText = t("age");
+      document.getElementById("q_meno_label").innerText = t("meno");
+
+      for (let i = 1; i <= 9; i++) document.getElementById(`q${i}_label`).innerText = t(`q${i}`);
+
+      document.getElementById("phone_label").innerHTML = t("phone");
+      // consent label contains a mailto link; keep it simple:
+      document.getElementById("consent_label").innerHTML =
+        currentLang === "zh"
+          ? `我已阅读并同意数据收集说明。数据将存储于Airtable（美国服务器），仅用于匿名化的服务优化。我了解可以通过 <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a> 随时请求删除我的数据。`
+          : `I consent to anonymous sleep tracking for service improvement. Data stored on Airtable (US). I can request deletion via <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>.`;
+
+      document.getElementById("donateLabel").innerHTML = t("donateLabel");
+      document.getElementById("submitBtn").innerText = t("btn");
+
+      const menoSelect = document.getElementById("meno");
+      if (menoSelect && menoSelect.options.length === 3) {
+        menoSelect.options[0].text = t("pre");
+        menoSelect.options[1].text = t("peri");
+        menoSelect.options[2].text = t("post");
+      }
+
+      for (let q of ["q2","q4","q5","q6","q7","q8","q9"]) {
+        const sel = document.getElementById(q);
+        if (sel && sel.options.length === 5) {
+          for (let i = 1; i <= 4; i++) sel.options[i].text = t(null, q, i-1);
+        }
+      }
+
+      document.documentElement.lang =
+        currentLang === "zh" ? "zh-CN" :
+        currentLang === "ms" ? "ms" :
+        currentLang === "id" ? "id" : "en";
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      applyLanguage();
+      document.querySelectorAll(".lang-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.lang === lang));
+    }
+
+    function renderLangBar() {
+      const langs = [
+        { code: "en", name: "English" },
+        { code: "zh", name: "中文" },
+        { code: "ms", name: "Melayu" },
+        { code: "id", name: "Indonesia" }
+      ];
+      const bar = document.getElementById("langBar");
+      bar.innerHTML = langs.map(l =>
+        `<button class="lang-btn ${currentLang === l.code ? "active" : ""}" data-lang="${l.code}" onclick="setLanguage('${l.code}')">${l.name}</button>`
+      ).join("");
+    }
+
+    window.onload = () => {
+      renderLangBar();
+      applyLanguage();
+      document.getElementById("submitBtn").onclick = onSubmit;
+      window.resetForm = resetForm;
+
+      document.getElementById("privacyPolicyLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        alert(
+          "Data collection follows Singapore PDPA. Stored on Airtable (US). DPO: privacy@aromasune.com. Retention: 24 months. You may request deletion anytime.\n\n" +
+          "Participation credits & donation: Each completed assessment records 10 AROMA SUNÉ participation credits (internal credits; not HPB Healthpoints, cash, or cryptocurrency). If you opt to donate, AROMA SUNÉ will donate cash based on total donated credits (10 credits = SGD $1 donation-equivalent), settled monthly, capped at SGD $300/month."
+        );
+      });
+    };
+  </script>
+</body>
+</html>
