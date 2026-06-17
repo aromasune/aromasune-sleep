@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Privacy Policy · AROMA SUNÉ™</title>
+
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: #fefef7;
+        color: #2c3e2f;
+        line-height: 1.5;
+        padding: 2rem 1.5rem;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 32px;
+        padding: 2rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        border: 1px solid #e9ede4;
+      }
+      .lang-bar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .lang-btn {
+        background: none;
+        border: 1px solid #d4c5b0;
+        padding: 4px 12px;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 0.8rem;
+      }
+      .lang-btn.active {
+        background: #b99470;
+        border-color: #b99470;
+        color: white;
+      }
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: #3c5e30;
+        margin-bottom: 0.5rem;
+      }
+      .last-updated {
+        color: #8b9a7a;
+        font-size: 0.8rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #e2e8da;
+        padding-bottom: 1rem;
+      }
+      h2 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #4a6a3b;
+        margin: 1.5rem 0 0.8rem 0;
+      }
+      p, li {
+        color: #5a6b52;
+        margin-bottom: 0.8rem;
+      }
+      ul {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      a {
+        color: #4a6a3b;
+        text-decoration: none;
+        border-bottom: 1px solid #d4c5b0;
+      }
+      a:hover { color: #2c4a2a; }
+      hr { margin: 1.5rem 0; border: none; border-top: 1px solid #e2e8da; }
+      .footer-note {
+        font-size: 0.7rem;
+        text-align: center;
+        margin-top: 2rem;
+        color: #8b9a7a;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="lang-bar" id="langBar"></div>
+
+      <h1 id="title">Privacy Policy</h1>
+      <div class="last-updated" id="lastUpdated">Last updated: 30 May 2026</div>
+
+      <div id="content"></div>
+
+      <div class="footer-note" id="footerNote">AROMA SUNÉ™ · quietly part of WTA · WSS · WITT AP</div>
+    </div>
+
+    <script>
+      // Persist selected language
+      let currentLang = localStorage.getItem("policyLang") || "en";
+
+      const translations = {
+        en: {
+          title: "Privacy Policy",
+          lastUpdated: "Last updated: 30 May 2026",
+          sections: [
+            {
+              title: "1. Who we are",
+              content:
+                "AROMA SUNÉ™ (operated by Royal Trade & Consultancy Pte. Ltd., UEN: 201923477E) provides non-pharmaceutical sleep wellness services. This privacy policy explains how we collect, use, and protect your data."
+            },
+            {
+              title: "2. What data we collect",
+              content:
+                "When you use our sleep assessment, we may collect: (a) Your questionnaire answers; (b) Age and menopause status (optional); (c) Phone number (optional, only to send your report); (d) Timestamp of submission."
+            },
+            {
+              title: "3. How we use your data",
+              content:
+                "We use your data only for: (a) Generating your personal sleep report; (b) Anonymous service improvement and trend analysis; (c) Continuity tracking (if you choose to take the survey multiple times). We never sell your data or share it with third parties for marketing."
+            },
+            {
+              title: "4. Data storage & security",
+              content:
+                "Your data is stored on Airtable (servers located in the United States). We take reasonable measures to protect your data, but no online transmission is 100% secure. By using our service, you acknowledge this risk."
+            },
+            {
+              title: "5. Data retention",
+              content:
+                "We retain your personal data for 24 months from your last interaction. After that, we anonymize or delete it, unless you request earlier deletion."
+            },
+            {
+              title: "6. Your rights (PDPA)",
+              content:
+                "Under Singapore's Personal Data Protection Act (PDPA), you have the right to: (a) Access your data; (b) Correct inaccurate data; (c) Withdraw consent at any time; (d) Request deletion of your data. To exercise these rights, contact our DPO below."
+            },
+            {
+              title: "7. Data Protection Officer (DPO)",
+              content:
+                'Our DPO is Jin Lan. For any privacy-related requests, email: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>. We will respond within 14 days.'
+            },
+            {
+              title: "8. Withdrawing consent",
+              content:
+                'You may withdraw your consent and request deletion at any time by emailing <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>. No questions asked, no pressure.'
+            },
+            {
+              title: "9. Changes to this policy",
+              content:
+                "We may update this policy occasionally. The latest version will always be posted here. Continued use after changes means you accept the updated policy."
+            },
+            {
+              title: "10. Complaints",
+              content:
+                "If you have concerns, please contact us first. You also have the right to lodge a complaint with the Personal Data Protection Commission (PDPC) of Singapore."
+            }
+          ],
+          footer: "AROMA SUNÉ™ · quietly part of WTA · WSS · WITT AP"
+        },
+
+        zh: {
+          title: "隐私政策",
+          lastUpdated: "最后更新：2026年5月30日",
+          sections: [
+            {
+              title: "1. 我们是谁",
+              content:
+                "AROMA SUNÉ™（由 Royal Trade & Consultancy Pte. Ltd. 运营，UEN: 201923477E）提供非药物睡眠健康服务。本隐私政策说明我们如何收集、使用与保护您的数据。"
+            },
+            {
+              title: "2. 我们收集哪些数据",
+              content:
+                "当您使用我们的睡眠评估时，我们可能收集：(a) 您的问卷回答；(b) 年龄与绝经状态（可选）；(c) 手机号（可选，仅用于发送报告）；(d) 提交时间戳。"
+            },
+            {
+              title: "3. 我们如何使用您的数据",
+              content:
+                "您的数据仅用于：(a) 生成个人睡眠报告；(b) 匿名化服务优化与趋势分析；(c) 连续性追踪（如您选择多次填写）。我们不会出售您的数据，也不会向第三方分享用于营销。"
+            },
+            {
+              title: "4. 数据存储与安全",
+              content:
+                "您的数据存储于 Airtable（服务器位于美国）。我们会采取合理措施保护数据，但任何在线传输都无法保证 100% 安全。使用服务即表示您知悉并接受此风险。"
+            },
+            {
+              title: "5. 数据保留期",
+              content:
+                "自您最后一次互动起，我们会将个人数据保留 24 个月；之后将匿名化或删除，除非您要求提前删除。"
+            },
+            {
+              title: "6. 您的权利（PDPA）",
+              content:
+                "根据新加坡《个人数据保护法》(PDPA)，您有权：(a) 访问您的数据；(b) 更正不准确数据；(c) 随时撤回同意；(d) 要求删除数据。如需行使权利，请联系下方 DPO。"
+            },
+            {
+              title: "7. 数据保护官（DPO）",
+              content:
+                '我们的 DPO 为 Jin Lan。如需隐私相关请求，请发送邮件至：<a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>。我们将在 14 天内回复。'
+            },
+            {
+              title: "8. 撤回同意",
+              content:
+                '您可以随时通过发送邮件至 <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a> 撤回同意并请求删除数据。无附加问题、无压力。'
+            },
+            {
+              title: "9. 本政策的变更",
+              content:
+                "我们可能会不定期更新本政策。最新版本将发布于本页面。若在变更后继续使用，视为您接受更新后的政策。"
+            },
+            {
+              title: "10. 投诉",
+              content:
+                "如您有疑虑，请先与我们联系。您也有权向新加坡个人数据保护委员会（PDPC）提出投诉。"
+            }
+          ],
+          footer: "AROMA SUNÉ™ · quietly part of WTA · WSS · WITT AP"
+        },
+
+        ms: {
+          title: "Dasar Privasi",
+          lastUpdated: "Kemas kini terakhir: 30 Mei 2026",
+          sections: [
+            {
+              title: "1. Siapa kami",
+              content:
+                "AROMA SUNÉ™ (dikendalikan oleh Royal Trade & Consultancy Pte. Ltd., UEN: 201923477E) menyediakan perkhidmatan kesejahteraan tidur bukan farmaseutikal. Dasar ini menerangkan cara kami mengumpul, menggunakan dan melindungi data anda."
+            },
+            {
+              title: "2. Data yang kami kumpulkan",
+              content:
+                "Apabila anda menggunakan penilaian tidur kami, kami mungkin mengumpul: (a) Jawapan soal selidik anda; (b) Umur dan status menopaus (pilihan); (c) Nombor telefon (pilihan, hanya untuk menghantar laporan); (d) Cap masa penghantaran."
+            },
+            {
+              title: "3. Cara kami menggunakan data anda",
+              content:
+                "Kami menggunakan data anda hanya untuk: (a) Menjana laporan tidur peribadi; (b) Penambahbaikan perkhidmatan secara anonim dan analisis trend; (c) Penjejakan kesinambungan (jika anda mengisi beberapa kali). Kami tidak menjual data anda dan tidak berkongsi untuk pemasaran pihak ketiga."
+            },
+            {
+              title: "4. Penyimpanan & keselamatan data",
+              content:
+                "Data anda disimpan di Airtable (pelayan di Amerika Syarikat). Kami mengambil langkah munasabah untuk melindungi data, namun tiada penghantaran atas talian yang 100% selamat. Dengan menggunakan perkhidmatan ini, anda mengakui risiko ini."
+            },
+            {
+              title: "5. Tempoh penyimpanan data",
+              content:
+                "Kami menyimpan data peribadi anda selama 24 bulan dari interaksi terakhir. Selepas itu, kami akan menganonimkan atau memadamkannya, kecuali jika anda meminta pemadaman lebih awal."
+            },
+            {
+              title: "6. Hak anda (PDPA)",
+              content:
+                "Di bawah Akta Perlindungan Data Peribadi (PDPA) Singapura, anda berhak untuk: (a) Mengakses data anda; (b) Membetulkan data yang tidak tepat; (c) Menarik balik persetujuan bila-bila masa; (d) Meminta pemadaman data. Untuk menggunakan hak ini, hubungi DPO kami di bawah."
+            },
+            {
+              title: "7. Pegawai Perlindungan Data (DPO)",
+              content:
+                'DPO kami ialah Jin Lan. Untuk sebarang permintaan berkaitan privasi, e-mel: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>. Kami akan memberi maklum balas dalam tempoh 14 hari.'
+            },
+            {
+              title: "8. Menarik balik persetujuan",
+              content:
+                'Anda boleh menarik balik persetujuan dan meminta pemadaman data pada bila-bila masa dengan menghantar e-mel ke <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>. Tiada soalan tambahan, tanpa tekanan.'
+            },
+            {
+              title: "9. Perubahan kepada dasar ini",
+              content:
+                "Kami mungkin mengemas kini dasar ini dari semasa ke semasa. Versi terkini akan sentiasa disiarkan di sini. Penggunaan berterusan selepas perubahan bermaksud anda menerima dasar yang dikemas kini."
+            },
+            {
+              title: "10. Aduan",
+              content:
+                "Jika anda mempunyai kebimbangan, sila hubungi kami terlebih dahulu. Anda juga berhak membuat aduan kepada Personal Data Protection Commission (PDPC) Singapura."
+            }
+          ],
+          footer: "AROMA SUNÉ™ · quietly part of WTA · WSS · WITT AP"
+        },
+
+        id: {
+          title: "Kebijakan Privasi",
+          lastUpdated: "Terakhir diperbarui: 30 Mei 2026",
+          sections: [
+            {
+              title: "1. Tentang kami",
+              content:
+                "AROMA SUNÉ™ (dioperasikan oleh Royal Trade & Consultancy Pte. Ltd., UEN: 201923477E) menyediakan layanan wellness tidur non-farmasi. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi data Anda."
+            },
+            {
+              title: "2. Data yang kami kumpulkan",
+              content:
+                "Saat Anda menggunakan asesmen tidur kami, kami dapat mengumpulkan: (a) Jawaban kuesioner Anda; (b) Usia dan status menopause (opsional); (c) Nomor telepon (opsional, hanya untuk mengirim laporan); (d) Stempel waktu pengiriman."
+            },
+            {
+              title: "3. Cara kami menggunakan data Anda",
+              content:
+                "Kami menggunakan data Anda hanya untuk: (a) Membuat laporan tidur personal; (b) Peningkatan layanan secara anonim dan analisis tren; (c) Pelacakan kontinuitas (jika Anda mengisi beberapa kali). Kami tidak menjual data Anda dan tidak membagikannya untuk pemasaran pihak ketiga."
+            },
+            {
+              title: "4. Penyimpanan & keamanan data",
+              content:
+                "Data Anda disimpan di Airtable (server berada di Amerika Serikat). Kami mengambil langkah yang wajar untuk melindungi data, namun tidak ada transmisi online yang 100% aman. Dengan menggunakan layanan ini, Anda memahami risiko tersebut."
+            },
+            {
+              title: "5. Retensi data",
+              content:
+                "Kami menyimpan data pribadi Anda selama 24 bulan sejak interaksi terakhir. Setelah itu, kami akan menganonimkan atau menghapusnya, kecuali Anda meminta penghapusan lebih awal."
+            },
+            {
+              title: "6. Hak Anda (PDPA)",
+              content:
+                "Di bawah Personal Data Protection Act (PDPA) Singapura, Anda berhak untuk: (a) Mengakses data Anda; (b) Memperbaiki data yang tidak akurat; (c) Menarik persetujuan kapan saja; (d) Meminta penghapusan data. Untuk menggunakan hak ini, hubungi DPO kami di bawah."
+            },
+            {
+              title: "7. Data Protection Officer (DPO)",
+              content:
+                'DPO kami adalah Jin Lan. Untuk permintaan terkait privasi, email: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>. Kami akan merespons dalam 14 hari.'
+            },
+            {
+              title: "8. Menarik persetujuan",
+              content:
+                'Anda dapat menarik persetujuan dan meminta penghapusan kapan saja dengan mengirim email ke <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a>. Tanpa pertanyaan tambahan, tanpa tekanan.'
+            },
+            {
+              title: "9. Perubahan kebijakan",
+              content:
+                "Kami dapat memperbarui kebijakan ini dari waktu ke waktu. Versi terbaru akan selalu dipublikasikan di halaman ini. Jika Anda terus menggunakan layanan setelah perubahan, berarti Anda menerima kebijakan terbaru."
+            },
+            {
+              title: "10. Keluhan",
+              content:
+                "Jika Anda memiliki kekhawatiran, silakan hubungi kami terlebih dahulu. Anda juga berhak mengajukan keluhan ke Personal Data Protection Commission (PDPC) Singapura."
+            }
+          ],
+          footer: "AROMA SUNÉ™ · quietly part of WTA · WSS · WITT AP"
+        }
+      };
+
+      function t(key, sectionIdx = null, isTitle = false) {
+        if (sectionIdx !== null) {
+          const sections = translations[currentLang]?.sections || translations.en.sections;
+          const sec = sections[sectionIdx];
+          return isTitle ? (sec?.title || "") : (sec?.content || "");
+        }
+        return translations[currentLang]?.[key] || translations.en[key] || "";
+      }
+
+      function renderContent() {
+        const container = document.getElementById("content");
+        const sections = translations[currentLang]?.sections || translations.en.sections;
+
+        let html = "";
+        for (let i = 0; i < sections.length; i++) {
+          html += `<h2>${t(null, i, true)}</h2>`;
+          html += `<p>${t(null, i, false)}</p>`;
+        }
+        container.innerHTML = html;
+      }
+
+      function applyLanguage() {
+        document.getElementById("title").innerText = t("title");
+        document.getElementById("lastUpdated").innerText = t("lastUpdated");
+        document.getElementById("footerNote").innerHTML = t("footer");
+
+        renderContent();
+
+        document.documentElement.lang =
+          currentLang === "zh" ? "zh-CN" :
+          currentLang === "ms" ? "ms" :
+          currentLang === "id" ? "id" : "en";
+      }
+
+      function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem("policyLang", lang);
+        applyLanguage();
+        document.querySelectorAll(".lang-btn")
+          .forEach(btn => btn.classList.toggle("active", btn.dataset.lang === lang));
+      }
+
+      function renderLangBar() {
+        const langs = [
+          { code: "en", name: "English" },
+          { code: "zh", name: "中文" },
+          { code: "ms", name: "Melayu" },
+          { code: "id", name: "Indonesia" }
+        ];
+        const bar = document.getElementById("langBar");
+        bar.innerHTML = langs
+          .map(l =>
+            `<button class="lang-btn ${currentLang === l.code ? "active" : ""}"
+              data-lang="${l.code}"
+              onclick="setLanguage('${l.code}')">${l.name}</button>`
+          )
+          .join("");
+      }
+
+      window.onload = () => {
+        renderLangBar();
+        applyLanguage();
+      };
+    </script>
+  </body>
+</html>
