@@ -1,0 +1,884 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AROMA SUNÉ™ · Connect</title>
+  <meta
+    name="description"
+    content="From sleep assessment to behavioral insights — understand sleep patterns, behavioral signals, and what they may reveal over time."
+  />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: #fefef7;
+      color: #2c3e2f;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* Language bar (same pattern as old) */
+    .lang-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      background: none;
+      border: 1px solid #d4c5b0;
+      padding: 4px 12px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.8rem;
+    }
+
+    .lang-btn.active {
+      background: #b99470;
+      border-color: #b99470;
+      color: white;
+    }
+
+    /* Header / Hero */
+    .header { text-align: center; margin-bottom: 2.2rem; }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: #4a6a3b;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: #2c4a2a;
+      line-height: 1.15;
+      margin-bottom: 0.8rem;
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: #6b7c5e;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .badge-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+      margin: 1.4rem 0 0;
+    }
+
+    .badge {
+      background: #eef3e8;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      color: #3a5a2a;
+    }
+
+    /* Trust bar */
+    .trust-bar {
+      background: #f3f5ef;
+      border-radius: 48px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0 2.4rem;
+      text-align: center;
+    }
+
+    .trust-item { font-size: 0.85rem; color: #4a5e3f; }
+    .trust-item strong { font-weight: 600; color: #2c4a2a; }
+
+    /* Cards / grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2.2rem 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.4rem;
+      margin: 1.8rem 0 2.2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 32px;
+      padding: 1.8rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      border: 1px solid #e9ede4;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #3c5e30;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: #2c4a2a;
+      margin: 2.6rem 0 0.9rem;
+    }
+
+    .section-lead {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 1.2rem;
+      color: #6b7c5e;
+      font-size: 1rem;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.3rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.6rem;
+      border-radius: 48px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .btn-primary { background: #4a6a3b; color: white; border: none; }
+    .btn-primary:hover { background: #3a5a2e; }
+
+    .btn-outline { border: 1px solid #b9cdab; background: transparent; color: #4a6a3b; }
+    .btn-outline:hover { background: #f0f5ea; }
+
+    /* Chain */
+    .chain-wrap {
+      background: #fafbf6;
+      border-radius: 32px;
+      padding: 1.8rem;
+      border: 1px solid #e2e8da;
+      text-align: center;
+    }
+
+    .chain {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0.4rem;
+      color: #2c4a2a;
+      font-weight: 600;
+    }
+
+    .chain .arrow { color: #8aa07b; font-weight: 800; }
+
+    /* Footer + inline links */
+    .footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e2e6db;
+      font-size: 0.75rem;
+      color: #8b9a7a;
+      text-align: center;
+    }
+
+    .footer a { color: #6b8460; text-decoration: none; }
+
+    .inline-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    hr { border: none; border-top: 1px solid #e2e8da; margin: 1rem 0; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 450px;
+      padding: 1.8rem;
+      border-radius: 32px;
+      margin: 1rem;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 16px; right: 20px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #8f9e82;
+      line-height: 1;
+      user-select: none;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 1.5rem; }
+      .trust-bar {
+        gap: 1rem;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 28px;
+      }
+      .hero-title { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="lang-bar" id="langBar"></div>
+
+    <!-- ① Hero -->
+    <div class="header">
+      <div class="logo">AROMA SUNÉ™</div>
+
+      <div class="hero-title" id="heroTitle"></div>
+      <div class="tagline" id="heroSub"></div>
+
+      <div class="btn-group" id="heroButtons"></div>
+
+      <div class="badge-container" id="badgeContainer"></div>
+    </div>
+
+    <!-- Guardrails (kept minimal) -->
+    <div class="trust-bar" id="guardrails"></div>
+
+    <!-- ② What You'll Get -->
+    <div class="section-title" id="wyGetTitle"></div>
+    <div class="section-lead" id="wyGetLead"></div>
+    <div class="grid-3" id="wyGetCards"></div>
+
+    <!-- ③ Why Sleep Matters -->
+    <div class="section-title" id="whySleepTitle"></div>
+    <div class="section-lead" id="whySleepLead"></div>
+    <div class="chain-wrap">
+      <div class="chain" id="sleepChain"></div>
+    </div>
+
+    <!-- ④ Why Behavioral Signals Matter -->
+    <div class="section-title" id="whySignalsTitle"></div>
+    <div class="section-lead" id="whySignalsLead"></div>
+
+    <!-- ⑤ About -->
+    <div class="section-title" id="aboutTitle"></div>
+    <div class="card" style="text-align:center;" id="aboutCard"></div>
+
+    <!-- ⑥ Credentials & Standards -->
+    <div class="section-title" id="credTitle"></div>
+    <div class="trust-bar" id="deliveryPillars"></div>
+    <div class="card" id="credCard"></div>
+
+    <!-- ⑦ Final CTA -->
+    <div class="card" style="background:#f6f9f2; text-align:center; margin-top:2.4rem;" id="finalCta"></div>
+
+    <!-- Contact -->
+    <div
+      id="contact"
+      class="contact"
+      style="margin-top: 3rem; background: #faf9f3; border-radius: 32px; padding: 1.8rem; text-align: center;"
+    >
+      <div id="contactBlock"></div>
+    </div>
+
+    <div class="footer" id="footerBlock"></div>
+  </div>
+
+  <!-- Privacy modal -->
+  <div id="privacyModal" class="modal" aria-hidden="true" role="dialog" aria-label="Privacy policy summary">
+    <div class="modal-content">
+      <span class="close-modal" aria-label="Close">×</span>
+      <h3 style="margin-bottom: 0.8rem;" id="modalTitle"></h3>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = "en";
+
+    // If your assessment page is a hosted file, switch this back to your full URL.
+    // Keeping local default: assessment.html
+    const ASSESSMENT_URL = "assessment.html";
+    const HOME_URL = "index.html";
+    const VERIFY_URL = "https://www.mydcs.com/verify";
+
+    const translations = {
+      en: {
+        langName: "English",
+        heroTitle: "From Sleep AssessmentNLBRto Behavioral Insights",
+        heroSub: "Understand sleep patterns, behavioral signals,NLBRand what they may reveal over time.",
+        heroBtns: [
+          { label: "Take Sleep Assessment", href: ASSESSMENT_URL, type: "primary" },
+          { label: "What You’ll Get", href: "#what-you-get", type: "outline" }
+        ],
+        badges: ["Sleep", "Signals", "Insights", "Understanding Over Time"],
+        guardrails: [
+          '🌿 <strong>Non-clinical</strong> · No diagnosis or treatment',
+          '🔐 <strong>Consent-based</strong> · Privacy-minded handling',
+          '📊 <strong>Patterns over time</strong> · Focus on continuity'
+        ],
+
+        wyGetTitle: "What You’ll Get",
+        wyGetLead: "Three components — designed to move from assessment → signals → insights.",
+        wyGetCards: [
+          {
+            title: "Sleep Assessment",
+            desc: "PSQI / ESS / ISI-based screening to understandNLBRsleep patterns and their potential impact."
+          },
+          {
+            title: "Behavioral Insights",
+            desc: "Translate sleep patterns into behavioral signalsNLBRsuch as energy, recovery, consistency,NLBRand daytime function."
+          },
+          {
+            title: "Guided Support",
+            desc: "A non-clinical support pathway designed to helpNLBRbuild healthier sleep habits over time."
+          }
+        ],
+
+        whySleepTitle: "Why Sleep Matters",
+        whySleepLead: "Sleep is more than rest.NLBRSleep patterns influence behavior,NLBRand behavior influences health over time.",
+        chain: ["Sleep", "↓", "Behavior", "↓", "Healthspan", "↓", "Healthy Longevity"],
+
+        whySignalsTitle: "Why Behavioral Signals Matter",
+        whySignalsLead:
+          "Sleep is one of the most accessible behavioral signals.NLBR" +
+          "Together with energy, recovery, consistency, and daytime function,NLBR" +
+          "these signals may help individuals understand health patterns over time.NLBR" +
+          "Small signals, observed consistently,NLBR" +
+          "can lead to meaningful long-term insights.",
+
+        aboutTitle: "About",
+        aboutHtml:
+          '<h3 style="margin-bottom:0.7rem;">AROMA SUNÉ is a Sleep & Behavioral Intelligence initiative</h3>' +
+          '<p style="color:#4a6040;">turning sleep patterns into actionable insights over time.</p>' +
+          '<p style="margin-top:0.9rem; color:#6b7c5e;">' +
+          'We provide structured sleep assessment,NLBRbehavioral insights,NLBRand a guided support pathwayNLBRwithout medical claims.' +
+          '</p>',
+
+        credTitle: "Credentials & Standards",
+        pillars: [
+          '✅ <strong>Assessment</strong> · structured screening',
+          '✅ <strong>Insights</strong> · behavioral interpretation',
+          '✅ <strong>Support</strong> · guided habit-building'
+        ],
+        credHtml:
+          "<h3>Supported by professional standards and memberships including:</h3>" +
+          '<ul style="margin-left:1.2rem; color:#4a6040;">' +
+          "<li>CIDESCO</li><li>IFA</li><li>IFRA</li>" +
+          "</ul>" +
+          '<p style="margin-top:0.9rem; font-size:0.9rem; color:#6b7c5e;">' +
+          "Credentials support quality and standards — the page focus remains on what you get: assessment → signals → insights." +
+          "</p>",
+
+        finalCtaHtml:
+          "<h3>Start With Sleep</h3>" +
+          '<p style="margin-bottom:1rem; color:#6b7c5e;">Better sleep begins with better understanding.</p>' +
+          '<a href="' + ASSESSMENT_URL + '" class="btn btn-primary" style="background:#5b7e48;">Take Sleep Assessment</a>' +
+          '<p style="font-size:0.75rem; margin-top:1rem; color:#8b9a7a;">Non-clinical educational support · no diagnosis or treatment.</p>',
+
+        contactHtml:
+          '<h3 style="margin-bottom:1rem;">📬 Connect</h3>' +
+          "<p>📱 WhatsApp: <strong>+65 81693808</strong> &nbsp;|&nbsp; 💬 WeChat: <strong>jlan_aroma</strong></p>" +
+          '<p>✉️ Email: <strong><a href="mailto:hello@aromasune.com">hello@aromasune.com</a></strong></p>' +
+          '<p style="font-size:0.85rem; margin-top:0.5rem;">Partnership areas: Assessment | Insights | Support | Hospitality wellness | Community wellbeing</p>' +
+          "<hr />" +
+          '<div class="inline-links">' +
+          '<a href="#" id="privacyPolicyLink">📄 Privacy Policy</a>' +
+          '<a href="mailto:privacy@aromasune.com">🗑️ Data Deletion Request</a>' +
+          '<a href="' + VERIFY_URL + '" target="_blank" rel="noopener">🔗 Verification</a>' +
+          "</div>" +
+          '<p style="font-size:0.7rem; color:#8f9e82;">' +
+          "Legal entity: Royal Trade & Consultancy Pte. Ltd. UEN:201923477E · SingaporeNLBR" +
+          "Non-clinical wellness support · does not provide medical diagnosis or treatment" +
+          "</p>",
+
+        footerHtml:
+          "<p>© 2026 AROMA SUNÉ™ — Sleep → Signals → Insights → Understanding Over Time</p>" +
+          '<p><a href="' + HOME_URL + '">Home</a> · <a href="' + ASSESSMENT_URL + '">Assessment</a></p>',
+
+        modalTitle: "Privacy Policy Summary",
+        modalBody:
+          '<p style="margin-bottom:0.6rem;">Data collection follows Singapore <strong>PDPA</strong> principles.</p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>DPO / Requests</strong>: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>Retention</strong>: 24 months (then anonymise or delete).</p>' +
+          "<p><small>Full policy can be provided upon request.</small></p>"
+      },
+
+      zh: {
+        langName: "中文",
+        heroTitle: "从睡眠评估NLBR到行为洞察",
+        heroSub: "理解睡眠模式、行为信号，NLBR以及它们随时间可能揭示的变化。",
+        heroBtns: [
+          { label: "开始睡眠评估", href: ASSESSMENT_URL, type: "primary" },
+          { label: "你将获得什么", href: "#what-you-get", type: "outline" }
+        ],
+        badges: ["睡眠", "信号", "洞察", "长期理解"],
+        guardrails: [
+          '🌿 <strong>非临床</strong> · 不提供诊断或治疗',
+          '🔐 <strong>以同意为前提</strong> · 重视隐私与数据权利',
+          '📊 <strong>看趋势</strong> · 关注连续性与长期观察'
+        ],
+
+        wyGetTitle: "What You’ll Get",
+        wyGetLead: "三部分组成：评估 → 信号 → 洞察。",
+        wyGetCards: [
+          {
+            title: "Sleep Assessment",
+            desc: "基于 PSQI / ESS / ISI 的筛查，帮助理解NLBR睡眠模式及其可能的影响。"
+          },
+          {
+            title: "Behavioral Insights",
+            desc: "将睡眠模式转译为可理解的行为信号，NLBR例如精力、恢复、稳定性与白天功能。"
+          },
+          {
+            title: "Guided Support",
+            desc: "一条非临床支持路径，帮助你在时间中NLBR建立更健康的睡眠习惯。"
+          }
+        ],
+
+        whySleepTitle: "Why Sleep Matters",
+        whySleepLead: "睡眠不仅是休息。NLBR睡眠模式影响行为，NLBR行为又会在时间里影响健康。",
+        chain: ["Sleep", "↓", "Behavior", "↓", "Healthspan", "↓", "Healthy Longevity"],
+
+        whySignalsTitle: "Why Behavioral Signals Matter",
+        whySignalsLead:
+          "睡眠是最容易获得的行为信号之一。NLBR" +
+          "结合精力、恢复、稳定性与白天功能，NLBR" +
+          "这些信号可能帮助个人理解健康模式在时间里的变化。NLBR" +
+          "微小的信号，持续观察，NLBR" +
+          "可以累积成有意义的长期洞察。",
+
+        aboutTitle: "About",
+        aboutHtml:
+          '<h3 style="margin-bottom:0.7rem;">AROMA SUNÉ 是一个 Sleep & Behavioral Intelligence 计划</h3>' +
+          '<p style="color:#4a6040;">将睡眠模式转化为可行动的长期洞察。</p>' +
+          '<p style="margin-top:0.9rem; color:#6b7c5e;">' +
+          '我们提供结构化睡眠评估、行为洞察与支持路径，NLBR不做医疗宣称。' +
+          "</p>",
+
+        credTitle: "Credentials & Standards",
+        pillars: [
+          '✅ <strong>Assessment</strong> · 结构化筛查',
+          '✅ <strong>Insights</strong> · 行为信号解读',
+          '✅ <strong>Support</strong> · 习惯支持路径'
+        ],
+        credHtml:
+          "<h3>Supported by professional standards and memberships including:</h3>" +
+          '<ul style="margin-left:1.2rem; color:#4a6040;">' +
+          "<li>CIDESCO</li><li>IFA</li><li>IFRA</li>" +
+          "</ul>" +
+          '<p style="margin-top:0.9rem; font-size:0.9rem; color:#6b7c5e;">' +
+          "背书用于质量与标准支持；本页核心仍是：评估 → 信号 → 洞察。" +
+          "</p>",
+
+        finalCtaHtml:
+          "<h3>Start With Sleep</h3>" +
+          '<p style="margin-bottom:1rem; color:#6b7c5e;">更好的睡眠，从更好的理解开始。</p>' +
+          '<a href="' + ASSESSMENT_URL + '" class="btn btn-primary" style="background:#5b7e48;">开始睡眠评估</a>' +
+          '<p style="font-size:0.75rem; margin-top:1rem; color:#8b9a7a;">非临床教育支持 · 不提供诊断或治疗。</p>',
+
+        contactHtml:
+          '<h3 style="margin-bottom:1rem;">📬 联系与合作</h3>' +
+          "<p>📱 WhatsApp: <strong>+65 81693808</strong> &nbsp;|&nbsp; 💬 WeChat: <strong>jlan_aroma</strong></p>" +
+          '<p>✉️ Email: <strong><a href="mailto:hello@aromasune.com">hello@aromasune.com</a></strong></p>' +
+          '<p style="font-size:0.85rem; margin-top:0.5rem;">合作方向：Assessment | Insights | Support | Hospitality wellness | Community wellbeing</p>' +
+          "<hr />" +
+          '<div class="inline-links">' +
+          '<a href="#" id="privacyPolicyLink">📄 隐私政策</a>' +
+          '<a href="mailto:privacy@aromasune.com">🗑️ 数据删除请求</a>' +
+          '<a href="' + VERIFY_URL + '" target="_blank" rel="noopener">🔗 核验</a>' +
+          "</div>" +
+          '<p style="font-size:0.7rem; color:#8f9e82;">' +
+          "法律主体：Royal Trade & Consultancy Pte. Ltd. UEN:201923477E · 新加坡NLBR" +
+          "非临床健康支持 · 不提供医疗诊断或治疗" +
+          "</p>",
+
+        footerHtml:
+          "<p>© 2026 AROMA SUNÉ™ — Sleep → Signals → Insights → Understanding Over Time</p>" +
+          '<p><a href="' + HOME_URL + '">首页</a> · <a href="' + ASSESSMENT_URL + '">评估</a></p>',
+
+        modalTitle: "隐私政策摘要",
+        modalBody:
+          '<p style="margin-bottom:0.6rem;">数据收集遵循新加坡 <strong>PDPA</strong> 原则。</p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>DPO / 数据权利请求</strong>：<a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>保留期</strong>：24 个月（之后匿名化或删除）。</p>' +
+          "<p><small>如需完整版政策，可邮件索取。</small></p>"
+      },
+
+      ms: {
+        langName: "Melayu",
+        heroTitle: "Dari Penilaian TidurNLBRke Wawasan Tingkah Laku",
+        heroSub: "Fahami corak tidur, isyarat tingkah laku,NLBRdan apa yang mungkin ditunjukkan dari masa ke masa.",
+        heroBtns: [
+          { label: "Ambil Penilaian Tidur", href: ASSESSMENT_URL, type: "primary" },
+          { label: "Apa Yang Anda Dapat", href: "#what-you-get", type: "outline" }
+        ],
+        badges: ["Tidur", "Isyarat", "Wawasan", "Fahaman Jangka Panjang"],
+        guardrails: [
+          '🌿 <strong>Bukan klinikal</strong> · Tiada diagnosis atau rawatan',
+          '🔐 <strong>Berdasarkan persetujuan</strong> · Utamakan privasi',
+          '📊 <strong>Corak dari masa ke masa</strong> · Fokus pada kesinambungan'
+        ],
+
+        wyGetTitle: "What You’ll Get",
+        wyGetLead: "Tiga komponen — daripada penilaian → isyarat → wawasan.",
+        wyGetCards: [
+          {
+            title: "Sleep Assessment",
+            desc: "Saringan berasaskan PSQI / ESS / ISI untuk memahamiNLBRcorak tidur dan kesan yang berpotensi."
+          },
+          {
+            title: "Behavioral Insights",
+            desc: "Terjemahkan corak tidur kepada isyarat tingkah lakuNLBRseperti tenaga, pemulihan, konsistensi,NLBRdan fungsi waktu siang."
+          },
+          {
+            title: "Guided Support",
+            desc: "Laluan sokongan bukan klinikal untuk membantuNLBRmembina tabiat tidur yang lebih sihat dari masa ke masa."
+          }
+        ],
+
+        whySleepTitle: "Why Sleep Matters",
+        whySleepLead: "Tidur lebih daripada rehat.NLBRCorak tidur mempengaruhi tingkah laku,NLBRdan tingkah laku mempengaruhi kesihatan dari masa ke masa.",
+        chain: ["Sleep", "↓", "Behavior", "↓", "Healthspan", "↓", "Healthy Longevity"],
+
+        whySignalsTitle: "Why Behavioral Signals Matter",
+        whySignalsLead:
+          "Tidur ialah salah satu isyarat tingkah laku yang paling mudah diakses.NLBR" +
+          "Bersama tenaga, pemulihan, konsistensi dan fungsi waktu siang,NLBR" +
+          "isyarat ini boleh membantu memahami corak kesihatan dari masa ke masa.NLBR" +
+          "Isyarat kecil yang diperhatikan secara konsistenNLBR" +
+          "boleh membawa kepada wawasan jangka panjang yang bermakna.",
+
+        aboutTitle: "About",
+        aboutHtml:
+          '<h3 style="margin-bottom:0.7rem;">AROMA SUNÉ ialah inisiatif Sleep & Behavioral Intelligence</h3>' +
+          '<p style="color:#4a6040;">yang menukar corak tidur kepada wawasan yang boleh diambil tindakan dari masa ke masa.</p>' +
+          '<p style="margin-top:0.9rem; color:#6b7c5e;">' +
+          'Kami menyediakan penilaian tidur berstruktur,NLBRwawasan tingkah laku,NLBRdan laluan sokongan berpanduNLBRtanpa tuntutan perubatan.' +
+          "</p>",
+
+        credTitle: "Credentials & Standards",
+        pillars: [
+          '✅ <strong>Assessment</strong> · saringan berstruktur',
+          '✅ <strong>Insights</strong> · tafsiran isyarat',
+          '✅ <strong>Support</strong> · sokongan tabiat'
+        ],
+        credHtml:
+          "<h3>Supported by professional standards and memberships including:</h3>" +
+          '<ul style="margin-left:1.2rem; color:#4a6040;">' +
+          "<li>CIDESCO</li><li>IFA</li><li>IFRA</li>" +
+          "</ul>",
+
+        finalCtaHtml:
+          "<h3>Start With Sleep</h3>" +
+          '<p style="margin-bottom:1rem; color:#6b7c5e;">Tidur yang lebih baik bermula dengan kefahaman yang lebih baik.</p>' +
+          '<a href="' + ASSESSMENT_URL + '" class="btn btn-primary" style="background:#5b7e48;">Ambil Penilaian Tidur</a>' +
+          '<p style="font-size:0.75rem; margin-top:1rem; color:#8b9a7a;">Sokongan pendidikan bukan klinikal · tiada diagnosis atau rawatan.</p>',
+
+        contactHtml:
+          '<h3 style="margin-bottom:1rem;">📬 Connect</h3>' +
+          "<p>📱 WhatsApp: <strong>+65 81693808</strong> &nbsp;|&nbsp; 💬 WeChat: <strong>jlan_aroma</strong></p>" +
+          '<p>✉️ Email: <strong><a href="mailto:hello@aromasune.com">hello@aromasune.com</a></strong></p>' +
+          "<hr />" +
+          '<div class="inline-links">' +
+          '<a href="#" id="privacyPolicyLink">📄 Privacy Policy</a>' +
+          '<a href="mailto:privacy@aromasune.com">🗑️ Data Deletion Request</a>' +
+          '<a href="' + VERIFY_URL + '" target="_blank" rel="noopener">🔗 Verification</a>' +
+          "</div>",
+
+        footerHtml:
+          "<p>© 2026 AROMA SUNÉ™ — Sleep → Signals → Insights → Understanding Over Time</p>" +
+          '<p><a href="' + HOME_URL + '">Home</a> · <a href="' + ASSESSMENT_URL + '">Assessment</a></p>',
+
+        modalTitle: "Privacy Policy Summary",
+        modalBody:
+          '<p style="margin-bottom:0.6rem;">Data collection follows Singapore <strong>PDPA</strong> principles.</p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>DPO / Requests</strong>: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>Retention</strong>: 24 months (then anonymise or delete).</p>'
+      },
+
+      id: {
+        langName: "Indonesia",
+        heroTitle: "Dari Sleep AssessmentNLBRke Behavioral Insights",
+        heroSub: "Pahami pola tidur, sinyal perilaku,NLBRdan apa yang mungkin terungkap dari waktu ke waktu.",
+        heroBtns: [
+          { label: "Take Sleep Assessment", href: ASSESSMENT_URL, type: "primary" },
+          { label: "What You’ll Get", href: "#what-you-get", type: "outline" }
+        ],
+        badges: ["Sleep", "Signals", "Insights", "Understanding Over Time"],
+        guardrails: [
+          '🌿 <strong>Non-klinis</strong> · Tidak ada diagnosis atau pengobatan',
+          '🔐 <strong>Berbasis persetujuan</strong> · Mengutamakan privasi',
+          '📊 <strong>Pola dari waktu ke waktu</strong> · Fokus pada kontinuitas'
+        ],
+
+        wyGetTitle: "What You’ll Get",
+        wyGetLead: "Tiga komponen — dari assessment → signals → insights.",
+        wyGetCards: [
+          {
+            title: "Sleep Assessment",
+            desc: "Skrining berbasis PSQI / ESS / ISI untuk memahamiNLBRpola tidur dan dampaknya yang mungkin."
+          },
+          {
+            title: "Behavioral Insights",
+            desc: "Menerjemahkan pola tidur menjadi sinyal perilakuNLBRseperti energi, pemulihan, konsistensi,NLBRdan fungsi di siang hari."
+          },
+          {
+            title: "Guided Support",
+            desc: "Jalur dukungan non-klinis untuk membantuNLBRmembangun kebiasaan tidur yang lebih sehat dari waktu ke waktu."
+          }
+        ],
+
+        whySleepTitle: "Why Sleep Matters",
+        whySleepLead: "Tidur lebih dari sekadar istirahat.NLBRPola tidur memengaruhi perilaku,NLBRdan perilaku memengaruhi kesehatan dari waktu ke waktu.",
+        chain: ["Sleep", "↓", "Behavior", "↓", "Healthspan", "↓", "Healthy Longevity"],
+
+        whySignalsTitle: "Why Behavioral Signals Matter",
+        whySignalsLead:
+          "Tidur adalah salah satu sinyal perilaku yang paling mudah diakses.NLBR" +
+          "Bersama energi, pemulihan, konsistensi, dan fungsi siang hari,NLBR" +
+          "sinyal ini dapat membantu memahami pola kesehatan dari waktu ke waktu.NLBR" +
+          "Sinyal kecil yang diamati secara konsistenNLBR" +
+          "dapat menghasilkan insight jangka panjang yang bermakna.",
+
+        aboutTitle: "About",
+        aboutHtml:
+          '<h3 style="margin-bottom:0.7rem;">AROMA SUNÉ adalah inisiatif Sleep & Behavioral Intelligence</h3>' +
+          '<p style="color:#4a6040;">mengubah pola tidur menjadi insight yang dapat ditindaklanjuti dari waktu ke waktu.</p>' +
+          '<p style="margin-top:0.9rem; color:#6b7c5e;">' +
+          'Kami menyediakan sleep assessment terstruktur,NLBRbehavioral insights,NLBRdan jalur dukungan terpanduNLBRtanpa klaim medis.' +
+          "</p>",
+
+        credTitle: "Credentials & Standards",
+        pillars: [
+          '✅ <strong>Assessment</strong> · skrining terstruktur',
+          '✅ <strong>Insights</strong> · interpretasi sinyal',
+          '✅ <strong>Support</strong> · dukungan kebiasaan'
+        ],
+        credHtml:
+          "<h3>Supported by professional standards and memberships including:</h3>" +
+          '<ul style="margin-left:1.2rem; color:#4a6040;">' +
+          "<li>CIDESCO</li><li>IFA</li><li>IFRA</li>" +
+          "</ul>",
+
+        finalCtaHtml:
+          "<h3>Start With Sleep</h3>" +
+          '<p style="margin-bottom:1rem; color:#6b7c5e;">Tidur yang lebih baik dimulai dari pemahaman yang lebih baik.</p>' +
+          '<a href="' + ASSESSMENT_URL + '" class="btn btn-primary" style="background:#5b7e48;">Take Sleep Assessment</a>' +
+          '<p style="font-size:0.75rem; margin-top:1rem; color:#8b9a7a;">Dukungan edukatif non-klinis · tanpa diagnosis atau pengobatan.</p>',
+
+        contactHtml:
+          '<h3 style="margin-bottom:1rem;">📬 Connect</h3>' +
+          "<p>📱 WhatsApp: <strong>+65 81693808</strong> &nbsp;|&nbsp; 💬 WeChat: <strong>jlan_aroma</strong></p>" +
+          '<p>✉️ Email: <strong><a href="mailto:hello@aromasune.com">hello@aromasune.com</a></strong></p>' +
+          "<hr />" +
+          '<div class="inline-links">' +
+          '<a href="#" id="privacyPolicyLink">📄 Privacy Policy</a>' +
+          '<a href="mailto:privacy@aromasune.com">🗑️ Data Deletion Request</a>' +
+          '<a href="' + VERIFY_URL + '" target="_blank" rel="noopener">🔗 Verification</a>' +
+          "</div>",
+
+        footerHtml:
+          "<p>© 2026 AROMA SUNÉ™ — Sleep → Signals → Insights → Understanding Over Time</p>" +
+          '<p><a href="' + HOME_URL + '">Home</a> · <a href="' + ASSESSMENT_URL + '">Assessment</a></p>',
+
+        modalTitle: "Privacy Policy Summary",
+        modalBody:
+          '<p style="margin-bottom:0.6rem;">Data collection follows Singapore <strong>PDPA</strong> principles.</p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>DPO / Requests</strong>: <a href="mailto:privacy@aromasune.com">privacy@aromasune.com</a></p>' +
+          '<p style="margin-bottom:0.6rem;"><strong>Retention</strong>: 24 months (then anonymise or delete).</p>'
+      }
+    };
+
+    function t(key) {
+      return (translations[currentLang] && translations[currentLang][key]) || translations.en[key];
+    }
+
+    function escapeAttr(s) {
+      return String(s).replace(/"/g, "&quot;");
+    }
+
+    function renderLangBar() {
+      const langs = [
+        { code: "en", name: translations.en.langName },
+        { code: "zh", name: translations.zh.langName },
+        { code: "ms", name: translations.ms.langName },
+        { code: "id", name: translations.id.langName }
+      ];
+
+      const bar = document.getElementById("langBar");
+      bar.innerHTML = langs.map(l =>
+        `<button class="lang-btn ${currentLang === l.code ? "active" : ""}" data-lang="${l.code}">${l.name}</button>`
+      ).join("");
+
+      bar.querySelectorAll("button.lang-btn").forEach(btn => {
+        btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+      });
+    }
+
+    function renderPage() {
+      // Set html lang
+      document.documentElement.lang =
+        currentLang === "zh" ? "zh-CN" :
+        currentLang === "ms" ? "ms" :
+        currentLang === "id" ? "id" : "en";
+
+      // ① Hero
+      document.getElementById("heroTitle").innerHTML = t("heroTitle");
+      document.getElementById("heroSub").innerHTML = t("heroSub");
+
+      const heroBtns = translations[currentLang].heroBtns || translations.en.heroBtns;
+      document.getElementById("heroButtons").innerHTML = heroBtns.map(b => {
+        const cls = b.type === "primary" ? "btn btn-primary" : "btn btn-outline";
+        return `<a class="${cls}" href="${escapeAttr(b.href)}">${b.label}</a>`;
+      }).join("");
+
+      const badges = translations[currentLang].badges || translations.en.badges;
+      document.getElementById("badgeContainer").innerHTML = badges
+        .map(b => `<span class="badge">${b}</span>`).join("");
+
+      // Guardrails
+      const guardrails = translations[currentLang].guardrails || translations.en.guardrails;
+      document.getElementById("guardrails").innerHTML = guardrails
+        .map(x => `<div class="trust-item">${x}</div>`).join("");
+
+      // ② What you'll get
+      document.getElementById("wyGetTitle").innerText = t("wyGetTitle");
+      document.getElementById("wyGetLead").innerText = translations[currentLang].wyGetLead || translations.en.wyGetLead;
+
+      const cards = translations[currentLang].wyGetCards || translations.en.wyGetCards;
+      document.getElementById("wyGetCards").innerHTML = cards.map(c => `
+        <div class="card">
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+        </div>
+      `).join("");
+      document.getElementById("wyGetCards").parentElement.id = "what-you-get";
+
+      // ③ Why sleep matters
+      document.getElementById("whySleepTitle").innerText = t("whySleepTitle");
+      document.getElementById("whySleepLead").innerHTML = t("whySleepLead");
+
+      const chain = translations[currentLang].chain || translations.en.chain;
+      document.getElementById("sleepChain").innerHTML = chain.map(x => {
+        if (x === "↓") return `<div class="arrow">↓</div>`;
+        return `<div>${x}</div>`;
+      }).join("");
+
+      // ④ Why signals
+      document.getElementById("whySignalsTitle").innerText = t("whySignalsTitle");
+      document.getElementById("whySignalsLead").innerHTML = t("whySignalsLead");
+
+      // ⑤ About
+      document.getElementById("aboutTitle").innerText = t("aboutTitle");
+      document.getElementById("aboutCard").innerHTML = t("aboutHtml");
+
+      // ⑥ Credentials
+      document.getElementById("credTitle").innerText = t("credTitle");
+
+      const pillars = translations[currentLang].pillars || translations.en.pillars;
+      document.getElementById("deliveryPillars").innerHTML = pillars
+        .map(p => `<div class="trust-item">${p}</div>`).join("");
+
+      document.getElementById("credCard").innerHTML = t("credHtml");
+
+      // ⑦ Final CTA
+      document.getElementById("finalCta").innerHTML = t("finalCtaHtml");
+
+      // Contact / Footer
+      document.getElementById("contactBlock").innerHTML = t("contactHtml");
+      document.getElementById("footerBlock").innerHTML = t("footerHtml");
+
+      // Modal strings
+      document.getElementById("modalTitle").innerText = t("modalTitle");
+      document.getElementById("modalBody").innerHTML = t("modalBody");
+
+      bindPrivacyLink();
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      renderLangBar();
+      renderPage();
+    }
+
+    function openModal() {
+      const modal = document.getElementById("privacyModal");
+      modal.style.display = "flex";
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("privacyModal");
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    function bindPrivacyLink() {
+      const privacyLink = document.getElementById("privacyPolicyLink");
+      if (privacyLink) {
+        privacyLink.onclick = (e) => {
+          e.preventDefault();
+          openModal();
+        };
+      }
+    }
+
+    window.onload = () => {
+      renderLangBar();
+      renderPage();
+
+      const closeSpan = document.querySelector(".close-modal");
+      if (closeSpan) closeSpan.onclick = closeModal;
+
+      const modal = document.getElementById("privacyModal");
+
+      window.onclick = (event) => {
+        if (event.target === modal) closeModal();
+      };
+
+      window.onkeydown = (event) => {
+        if (event.key === "Escape") closeModal();
+      };
+    };
+  </script>
+</body>
+</html>
