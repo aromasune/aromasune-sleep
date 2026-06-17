@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+	<title>AROMA SUNÉ · Digital Card</title>
+	<meta name="description" content="AROMA SUNÉ Digital Card · Non-pharmaceutical sleep wellness for women 40-60 · Connect / Privacy" />
+
+	<!-- Open Graph -->
+	<meta property="og:title" content="AROMA SUNÉ · Digital Card" />
+	<meta property="og:description" content="Non-pharmaceutical sleep wellness system for women 40-60 · Connect / Collaborate" />
+	<meta property="og:type" content="website" />
+
+	<style>
+		:root{
+			--bg: #fefef7;
+			--card: #ffffff;
+			--ink: #2c3e2f;
+			--muted: #6b7c5e;
+			--muted2: #8b9a7a;
+			--line: #e2e8da;
+			--accent: #4a6a3b;
+			--accent2: #b99470;
+			--shadow: 0 10px 24px rgba(0,0,0,0.06);
+			--radius: 28px;
+		}
+
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+
+		body{
+			font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+			background: var(--bg);
+			color: var(--ink);
+			line-height: 1.5;
+			padding: 24px 16px;
+		}
+
+		.wrap{ max-width: 920px; margin: 0 auto; }
+
+		.lang-bar{
+			display: flex;
+			justify-content: flex-end;
+			gap: 8px;
+			margin-bottom: 12px;
+			flex-wrap: wrap;
+		}
+		.lang-btn{
+			background: none;
+			border: 1px solid #d4c5b0;
+			padding: 4px 12px;
+			border-radius: 999px;
+			cursor: pointer;
+			transition: 0.2s;
+			font-size: 12px;
+			color: var(--ink);
+		}
+		.lang-btn.active{
+			background: var(--accent2);
+			border-color: var(--accent2);
+			color: #fff;
+		}
+
+		.grid{
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 14px;
+		}
+		@media (min-width: 900px){
+			.grid{
+				grid-template-columns: 1.1fr 0.9fr;
+				align-items: start;
+			}
+		}
+
+		.card{
+			background: var(--card);
+			border: 1px solid #e9ede4;
+			border-radius: var(--radius);
+			box-shadow: var(--shadow);
+			padding: 22px;
+		}
+
+		.brand{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 14px;
+			flex-wrap: wrap;
+		}
+
+		.logo{
+			letter-spacing: 2px;
+			font-weight: 600;
+			font-size: 22px;
+			color: var(--accent);
+			line-height: 1.15;
+		}
+		.tag{
+			font-size: 12px;
+			color: var(--muted);
+			margin-top: 6px;
+		}
+
+		.pill{
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 12px;
+			border-radius: 999px;
+			background: #f3f5ef;
+			border: 1px solid var(--line);
+			color: #3a5a2a;
+			font-size: 12px;
+			white-space: nowrap;
+		}
+
+		.title{
+			font-size: 18px;
+			font-weight: 600;
+			color: #2c4a2a;
+			margin-top: 6px;
+		}
+		.subtitle{
+			font-size: 13px;
+			color: var(--muted);
+			margin-top: 8px;
+		}
+
+		.badges{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-top: 14px;
+		}
+		.badge{
+			font-size: 12px;
+			color: #3a5a2a;
+			background: #eef3e8;
+			border: 1px solid #e2e8da;
+			padding: 6px 10px;
+			border-radius: 999px;
+		}
+
+		hr{
+			border: none;
+			border-top: 1px solid var(--line);
+			margin: 16px 0;
+		}
+
+		.rows{
+			display: grid;
+			gap: 10px;
+			margin-top: 6px;
+		}
+		.row{
+			display: grid;
+			grid-template-columns: 22px 1fr auto;
+			gap: 10px;
+			align-items: center;
+			padding: 10px 12px;
+			border: 1px solid var(--line);
+			border-radius: 16px;
+			background: #fafbf6;
+		}
+		.row .k{ color: var(--muted); font-size: 12px; }
+		.row .v{ color: var(--ink); font-weight: 600; font-size: 13px; word-break: break-word; }
+		.row .v a{
+			color: var(--ink);
+			text-decoration: none;
+			border-bottom: 1px solid #d4c5b0;
+		}
+
+		.btns{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			margin-top: 14px;
+		}
+		.btn{
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			padding: 12px 14px;
+			border-radius: 999px;
+			text-decoration: none;
+			font-weight: 600;
+			font-size: 13px;
+			transition: 0.2s;
+			user-select: none;
+			border: 1px solid transparent;
+			cursor: pointer;
+			background: transparent;
+		}
+		.btn-primary{ background: var(--accent); color: #fff; }
+		.btn-primary:hover{ background: #3a5a2e; }
+		.btn-outline{
+			background: transparent;
+			color: var(--accent);
+			border-color: #b9cdab;
+		}
+		.btn-outline:hover{ background: #f0f5ea; }
+
+		.small{ font-size: 12px; color: var(--muted2); margin-top: 12px; }
+
+		.rightCard h3{
+			font-size: 14px;
+			color: #2c4a2a;
+			margin-bottom: 10px;
+		}
+		.list{
+			margin-left: 16px;
+			color: #4a6040;
+			font-size: 13px;
+			display: grid;
+			gap: 8px;
+		}
+
+		.footer{
+			text-align: center;
+			font-size: 12px;
+			color: var(--muted2);
+			margin-top: 16px;
+		}
+
+		/* Modal */
+		.modal{
+			display: none;
+			position: fixed;
+			inset: 0;
+			background: rgba(0,0,0,0.55);
+			align-items: center;
+			justify-content: center;
+			padding: 16px;
+			z-index: 999;
+		}
+		.modalContent{
+			width: min(560px, 100%);
+			background: #fff;
+			border-radius: 22px;
+			padding: 18px;
+			position: relative;
+			border: 1px solid var(--line);
+			box-shadow: var(--shadow);
+		}
+		.modalClose{
+			position: absolute;
+			right: 14px;
+			top: 10px;
+			font-size: 28px;
+			color: #8f9e82;
+			cursor: pointer;
+			line-height: 1;
+		}
+		.modalTitle{
+			font-size: 16px;
+			font-weight: 700;
+			color: #2c4a2a;
+			margin-bottom: 8px;
+		}
+		.modalText{
+			font-size: 13px;
+			color: #4a6040;
+			line-height: 1.55;
+		}
+		code{
+			background: #f3f5ef;
+			border: 1px solid #e2e8da;
+			border-radius: 10px;
+			padding: 2px 6px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wrap">
+		<div class="lang-bar" id="langBar"></div>
+
+		<div class="grid">
+			<section class="card">
+				<div class="brand">
+					<div>
+						<div class="logo">AROMA SUNÉ™</div>
+						<div class="tag" id="brandTag">quietly part of WTA · WSS · WITT AP</div>
+					</div>
+					<div class="pill" id="pillTop">🌙 non-pharmaceutical sleep wellness</div>
+				</div>
+
+				<div class="title" id="headline">Non-pharmaceutical sleep wellness system for women 40-60</div>
+				<div class="subtitle" id="subline">gentle · low-pressure · continuity · PSQI · hotel/resort/enterprise</div>
+
+				<div class="badges" id="badgeContainer"></div>
+
+				<hr />
+
+				<div class="rows">
+					<div class="row">
+						<div>👤</div>
+						<div>
+							<div class="k" id="kName">Lead</div>
+							<div class="v" id="vName">Jin Lan（金兰）</div>
+						</div>
+						<button class="btn btn-outline" style="padding:8px 10px;" id="copyNameBtn" type="button">Copy</button>
+					</div>
+
+					<div class="row">
+						<div>📱</div>
+						<div>
+							<div class="k" id="kWhatsApp">WhatsApp</div>
+							<div class="v" id="vWhatsApp">+65 8169 3808</div>
+						</div>
+						<a class="btn btn-outline" style="padding:8px 10px;" id="waBtn" href="#" target="_blank" rel="noopener noreferrer">Open</a>
+					</div>
+
+					<div class="row">
+						<div>💬</div>
+						<div>
+							<div class="k" id="kWeChat">WeChat</div>
+							<div class="v" id="vWeChat">jlan_aroma</div>
+						</div>
+						<button class="btn btn-outline" style="padding:8px 10px;" id="copyWeChatBtn" type="button">Copy</button>
+					</div>
+
+					<div class="row">
+						<div>✉️</div>
+						<div>
+							<div class="k" id="kEmail">Email</div>
+							<div class="v"><a id="vEmailLink" href="mailto:hello@aromasune.com">hello@aromasune.com</a></div>
+						</div>
+						<button class="btn btn-outline" style="padding:8px 10px;" id="copyEmailBtn" type="button">Copy</button>
+					</div>
+
+					<div class="row">
+						<div>🌐</div>
+						<div>
+							<div class="k" id="kSite">Website</div>
+							<div class="v"><a id="vSiteLink" href="https://www.aromasune.com/" target="_blank" rel="noopener noreferrer">www.aromasune.com</a></div>
+						</div>
+						<button class="btn btn-outline" style="padding:8px 10px;" id="copySiteBtn" type="button">Copy</button>
+					</div>
+				</div>
+
+				<div class="btns">
+					<a class="btn btn-primary" id="surveyBtn" href="https://aromasune.github.io/aromasune-sleep/servey.html" target="_blank" rel="noopener noreferrer">→ Start self-assessment</a>
+					<a class="btn btn-outline" id="privacyBtn" href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+					<button class="btn btn-outline" id="saveVcfBtn" type="button">Save contact (.vcf)</button>
+					<button class="btn btn-outline" id="shareBtn" type="button">Share this card</button>
+				</div>
+
+				<div class="small" id="legalLine">
+					Entity: Royal Trade & Consultancy Pte. Ltd. · Singapore · UEN: 201923477ENLBR
+					Non-pharmaceutical sleep wellness · not medical diagnosis or treatment
+				</div>
+
+				<div class="footer" id="footerNote">AROMA SUNÉ™ · calm · low-pressure · continuity</div>
+			</section>
+
+			<aside class="card rightCard">
+				<h3 id="rightTitle">Good-fit scenarios</h3>
+				<ul class="list" id="rightList"></ul>
+
+				<hr />
+
+				<h3 id="rightTitle2">Quick links</h3>
+				<div class="btns">
+					<a class="btn btn-outline" id="guideBtn" href="#" target="_blank" rel="noopener noreferrer">Sleep Guide</a>
+					<a class="btn btn-outline" id="verifyBtn" href="#" target="_blank" rel="noopener noreferrer">Verification</a>
+					<a class="btn btn-outline" id="deleteBtn" href="mailto:privacy@aromasune.com">Data deletion request</a>
+				</div>
+
+				<div class="small" id="noteLine">Tip: Add this page to your phone home screen for quick access.</div>
+			</aside>
+		</div>
+	</div>
+
+	<div class="modal" id="modal" aria-hidden="true">
+		<div class="modalContent">
+			<div class="modalClose" id="modalClose">×</div>
+			<div class="modalTitle" id="modalTitle">Notice</div>
+			<div class="modalText" id="modalText"></div>
+		</div>
+	</div>
+
+	<script>
+		const CONFIG = {
+			name: "Jin Lan（金兰）",
+			title: "Founder / DPO",
+			org: "Royal Trade & Consultancy Pte. Ltd. (AROMA SUNÉ)",
+			whatsapp: "+6581693808",
+			whatsappDisplay: "+65 8169 3808",
+			wechat: "jlan_aroma",
+			email: "hello@aromasune.com",
+			siteUrl: "https://www.aromasune.com/",
+			surveyUrl: "https://aromasune.github.io/aromasune-sleep/servey.html",
+			privacyUrl: "privacy.html",
+			sleepGuideUrl: "https://aromasune.github.io/aromasune-sleep/sleep_guide.html",
+			verifyUrl: "https://www.mydcs.com/verify",
+			dataDeletionEmail: "privacy@aromasune.com"
+		};
+
+		let currentLang = localStorage.getItem("siteLang") || "en";
+
+		const translations = {
+			zh: {
+				pillTop: "🌙 非药物睡眠健康",
+				brandTag: "安静地 part of WTA · WSS · WITT AP",
+				headline: "非药物睡眠健康评估与服务体系（女性 40–60）",
+				subline: "轻柔、低压、连续性 · 评估（PSQI）· 酒店/康养/企业合作",
+				badges: ["星级体系（内部对标）", "PSQI 追踪", "PDPA 合规", "Airtable (US) 存储"],
+				fields: { name: "负责人", wa: "WhatsApp", wechat: "WeChat", email: "邮箱", site: "官网" },
+				buttons: { survey: "→ 开始睡眠自评", privacy: "隐私政策", vcf: "保存联系人 (.vcf)", share: "分享此名片" },
+				legal: "法律主体：Royal Trade & Consultancy Pte. Ltd. · Singapore · UEN: 201923477ENLBR非药物睡眠健康服务 · 不提供医疗诊断或治疗",
+				footer: "AROMA SUNÉ™ · calm · low-pressure · continuity",
+				rightTitle: "适合的合作场景",
+				rightList: ["🏨 星级酒店 / 康养度假：睡眠升级包、培训、年度匿名报告", "💼 企业健康福利：睡眠日、线上课程、情绪音频", "🔬 数据合作：合规数据资产池（按授权）"],
+				rightTitle2: "快速入口",
+				guideBtn: "睡眠指南",
+				verifyBtn: "存证核验",
+				deleteBtn: "数据删除请求",
+				noteLine: "提示：你可以把此页面加入手机主屏幕，作为轻量名片入口。",
+				copied: "已复制：",
+				shareText: "AROMA SUNÉ™ 电子名片",
+				modal: { title: "提示", noClipboard: "当前浏览器不支持自动复制，请手动复制。", shared: "已触发系统分享。", shareFail: "无法调用系统分享，请复制链接后手动发送：" }
+			},
+			en: {
+				pillTop: "🌙 non-pharmaceutical sleep wellness",
+				brandTag: "quietly part of WTA · WSS · WITT AP",
+				headline: "Non-pharmaceutical sleep wellness system for women 40-60",
+				subline: "gentle · low-pressure · continuity · PSQI · hotel/resort/enterprise",
+				badges: ["Star-rated system (internal)", "PSQI tracking", "PDPA-aligned", "Stored on Airtable (US)"],
+				fields: { name: "Lead", wa: "WhatsApp", wechat: "WeChat", email: "Email", site: "Website" },
+				buttons: { survey: "→ Start self-assessment", privacy: "Privacy Policy", vcf: "Save contact (.vcf)", share: "Share this card" },
+				legal: "Entity: Royal Trade & Consultancy Pte. Ltd. · Singapore · UEN: 201923477ENLBRNon-pharmaceutical sleep wellness · not medical diagnosis or treatment",
+				footer: "AROMA SUNÉ · calm · low-pressure · continuity",
+				rightTitle: "Good-fit scenarios",
+				rightList: ["🏨 Hotels / resorts: sleep upgrade packages, training, annual anonymized reports", "💼 Corporate wellness: sleep day, courses, emotional audio", "🔬 Data collaboration: consent-based compliant data pool"],
+				rightTitle2: "Quick links",
+				guideBtn: "Sleep Guide",
+				verifyBtn: "Verification",
+				deleteBtn: "Data deletion request",
+				noteLine: "Tip: Add this page to your phone home screen for quick access.",
+				copied: "Copied: ",
+				shareText: "AROMA SUNÉ™ Digital Card",
+				modal: { title: "Notice", noClipboard: "Clipboard not available. Please copy manually.", shared: "System share opened.", shareFail: "System share not available. Copy this link and share manually: " }
+			},
+			ms: {
+				pillTop: "🌙 kesejahteraan tidur bukan farmaseutikal",
+				brandTag: "secara senyap sebahagian daripada WTA · WSS · WITT AP",
+				headline: "Sistem kesejahteraan tidur untuk wanita 40-60",
+				subline: "lembut · tekanan rendah · berterusan · PSQI · hotel/resort/korporat",
+				badges: ["Sistem bertaraf bintang (dalaman)", "Jejak PSQI", "Selaras PDPA", "Disimpan di Airtable (AS)"],
+				fields: { name: "Peneraju", wa: "WhatsApp", wechat: "WeChat", email: "E-mel", site: "Laman web" },
+				buttons: { survey: "→ Mula penilaian", privacy: "Dasar Privasi", vcf: "Simpan kontak (.vcf)", share: "Kongsi kad ini" },
+				legal: "Entiti: Royal Trade & Consultancy Pte. Ltd. · Singapore · UEN: 201923477ENLBRKesejahteraan bukan farmaseutikal · bukan diagnosis atau rawatan perubatan",
+				footer: "AROMA SUNÉ™ · tenang · tekanan rendah · kesinambungan",
+				rightTitle: "Senario sesuai",
+				rightList: ["🏨 Hotel / resort: pakej naik taraf tidur, latihan, laporan anonim tahunan", "💼 Kesejahteraan korporat: hari tidur, kursus, audio emosi", "🔬 Kolaborasi data: kolam data patuh berasaskan persetujuan"],
+				rightTitle2: "Pautan pantas",
+				guideBtn: "Panduan tidur",
+				verifyBtn: "Pengesahan",
+				deleteBtn: "Permintaan pemadaman data",
+				noteLine: "Tip: Tambah halaman ini ke skrin utama telefon untuk akses pantas.",
+				copied: "Disalin: ",
+				shareText: "Kad Digital AROMA SUNÉ™",
+				modal: { title: "Makluman", noClipboard: "Papan klip tidak tersedia. Sila salin secara manual.", shared: "Perkongsian sistem dibuka.", shareFail: "Perkongsian sistem tidak tersedia. Salin pautan ini dan kongsi secara manual: " }
+			},
+			id: {
+				pillTop: "🌙 wellness tidur non-farmasi",
+				brandTag: "diam-diam bagian dari WTA · WSS · WITT AP",
+				headline: "Sistem wellness tidur untuk wanita 40-60",
+				subline: "lembut · tekanan rendah · berkelanjutan · PSQI · hotel/resort/perusahaan",
+				badges: ["Sistem bintang (internal)", "Pelacakan PSQI", "Selaras PDPA", "Disimpan di Airtable (AS)"],
+				fields: { name: "Penanggung jawab", wa: "WhatsApp", wechat: "WeChat", email: "Email", site: "Situs" },
+				buttons: { survey: "→ Mulai asesmen", privacy: "Kebijakan Privasi", vcf: "Simpan kontak (.vcf)", share: "Bagikan kartu ini" },
+				legal: "Entitas: Royal Trade & Consultancy Pte. Ltd. · Singapore · UEN: 201923477ENLBRWellness non-farmasi · bukan diagnosis atau perawatan medis",
+				footer: "AROMA SUNÉ · tenang · tekanan rendah · kesinambungan",
+				rightTitle: "Skenario cocok",
+				rightList: ["🏨 Hotel / resort: paket upgrade tidur, pelatihan, laporan anonim tahunan", "💼 Wellness perusahaan: sleep day, kursus, audio emosi", "🔬 Kolaborasi data: pool data patuh berbasis persetujuan"],
+				rightTitle2: "Tautan cepat",
+				guideBtn: "Panduan tidur",
+				verifyBtn: "Verifikasi",
+				deleteBtn: "Permintaan hapus data",
+				noteLine: "Tip: Tambahkan halaman ini ke layar utama ponsel untuk akses cepat.",
+				copied: "Tersalin: ",
+				shareText: "Kartu Digital AROMA SUNÉ™",
+				modal: { title: "Info", noClipboard: "Clipboard tidak tersedia. Silakan salin manual.", shared: "Berbagi sistem dibuka.", shareFail: "Berbagi sistem tidak tersedia. Salin tautan ini dan bagikan manual: " }
+			}
+		};
+
+		function tr(path){
+			const parts = path.split(".");
+			let obj = translations[currentLang] || translations.en;
+			for (const p of parts) obj = obj?.[p];
+			if (obj !== undefined) return obj;
+
+			obj = translations.en;
+			for (const p of parts) obj = obj?.[p];
+			return obj ?? "";
+		}
+
+		function renderLangBar(){
+			const langs = [
+				{ code: "en", name: "English" },
+				{ code: "zh", name: "中文" },
+				{ code: "ms", name: "Melayu" },
+				{ code: "id", name: "Indonesia" }
+			];
+			const bar = document.getElementById("langBar");
+			bar.innerHTML = langs.map(l =>
+				`<button class="lang-btn ${currentLang === l.code ? "active" : ""}" data-lang="${l.code}">${l.name}</button>`
+			).join("");
+
+			bar.querySelectorAll(".lang-btn").forEach(btn => {
+				btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+			});
+		}
+
+		function setLanguage(lang){
+			currentLang = lang;
+			localStorage.setItem("siteLang", lang);
+			applyLanguage();
+			document.querySelectorAll(".lang-btn").forEach(btn =>
+				btn.classList.toggle("active", btn.dataset.lang === lang)
+			);
+		}
+
+		function applyLanguage(){
+			document.documentElement.lang =
+				currentLang === "zh" ? "zh-CN" :
+				currentLang === "ms" ? "ms" :
+				currentLang === "id" ? "id" : "en";
+
+			document.getElementById("pillTop").innerText = tr("pillTop");
+			document.getElementById("brandTag").innerText = tr("brandTag");
+			document.getElementById("headline").innerText = tr("headline");
+			document.getElementById("subline").innerText = tr("subline");
+
+			const badges = translations[currentLang]?.badges || translations.en.badges || [];
+			document.getElementById("badgeContainer").innerHTML = badges.map(b => `<span class="badge">${b}</span>`).join("");
+
+			document.getElementById("kName").innerText = tr("fields.name");
+			document.getElementById("kWhatsApp").innerText = tr("fields.wa");
+			document.getElementById("kWeChat").innerText = tr("fields.wechat");
+			document.getElementById("kEmail").innerText = tr("fields.email");
+			document.getElementById("kSite").innerText = tr("fields.site");
+
+			document.getElementById("surveyBtn").innerText = tr("buttons.survey");
+			document.getElementById("privacyBtn").innerText = tr("buttons.privacy");
+			document.getElementById("saveVcfBtn").innerText = tr("buttons.vcf");
+			document.getElementById("shareBtn").innerText = tr("buttons.share");
+
+			document.getElementById("legalLine").innerHTML = tr("legal");
+			document.getElementById("footerNote").innerText = tr("footer");
+
+			document.getElementById("rightTitle").innerText = tr("rightTitle");
+			const items = translations[currentLang]?.rightList || translations.en.rightList || [];
+			document.getElementById("rightList").innerHTML = items.map(i => `<li>${i}</li>`).join("");
+
+			document.getElementById("rightTitle2").innerText = tr("rightTitle2");
+			document.getElementById("guideBtn").innerText = tr("guideBtn");
+			document.getElementById("verifyBtn").innerText = tr("verifyBtn");
+			document.getElementById("deleteBtn").innerText = tr("deleteBtn");
+			document.getElementById("noteLine").innerText = tr("noteLine");
+		}
+
+		function openModal(title, htmlText){
+			const modal = document.getElementById("modal");
+			document.getElementById("modalTitle").innerText = title;
+			document.getElementById("modalText").innerHTML = htmlText;
+			modal.style.display = "flex";
+			modal.setAttribute("aria-hidden", "false");
+		}
+
+		function closeModal(){
+			const modal = document.getElementById("modal");
+			modal.style.display = "none";
+			modal.setAttribute("aria-hidden", "true");
+		}
+
+		function toast(msg){ openModal(tr("modal.title"), msg); }
+
+		async function copyText(text){
+			try{
+				await navigator.clipboard.writeText(text);
+				toast(`${tr("copied")}${text}`);
+			}catch (e){
+				toast(tr("modal.noClipboard"));
+			}
+		}
+
+		function downloadTextFile(filename, text){
+			const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			URL.revokeObjectURL(url);
+		}
+
+		function buildVcf(){
+			const lines = [
+				"BEGIN:VCARD",
+				"VERSION:3.0",
+				`FN:${CONFIG.name}`,
+				`ORG:${CONFIG.org}`,
+				`TITLE:${CONFIG.title}`,
+				`TEL;TYPE=CELL,WHATSAPP:${CONFIG.whatsapp}`,
+				`EMAIL;TYPE=INTERNET:${CONFIG.email}`,
+				`URL:${CONFIG.siteUrl}`,
+				"END:VCARD"
+			];
+			return lines.join("\n");
+		}
+
+		async function shareCard(){
+			const url = window.location.href;
+			const title = tr("shareText");
+			const text = title;
+
+			if (navigator.share){
+				try{
+					await navigator.share({ title, text, url });
+					toast(tr("modal.shared"));
+					return;
+				}catch (e){}
+			}
+			toast(`${tr("modal.shareFail")}\
+\
+<code style="user-select:all;">${url}</code>`);
+		}
+
+		window.addEventListener("load", () => {
+			document.getElementById("vName").innerText = CONFIG.name;
+			document.getElementById("vWhatsApp").innerText = CONFIG.whatsappDisplay;
+			document.getElementById("vWeChat").innerText = CONFIG.wechat;
+
+			const emailLink = document.getElementById("vEmailLink");
+			emailLink.href = `mailto:${CONFIG.email}`;
+			emailLink.innerText = CONFIG.email;
+
+			const siteLink = document.getElementById("vSiteLink");
+			siteLink.href = CONFIG.siteUrl;
+			siteLink.innerText = CONFIG.siteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+			document.getElementById("surveyBtn").href = CONFIG.surveyUrl;
+			document.getElementById("privacyBtn").href = CONFIG.privacyUrl;
+			document.getElementById("guideBtn").href = CONFIG.sleepGuideUrl;
+			document.getElementById("verifyBtn").href = CONFIG.verifyUrl;
+
+			document.getElementById("deleteBtn").href = `mailto:${CONFIG.dataDeletionEmail}`;
+
+			const waBtn = document.getElementById("waBtn");
+			const waNumber = CONFIG.whatsapp.replace(//g, "");
+			waBtn.href = `https://wa.me/${waNumber}`;
+
+			document.getElementById("copyNameBtn").addEventListener("click", () => copyText(CONFIG.name));
+			document.getElementById("copyWeChatBtn").addEventListener("click", () => copyText(CONFIG.wechat));
+			document.getElementById("copyEmailBtn").addEventListener("click", () => copyText(CONFIG.email));
+			document.getElementById("copySiteBtn").addEventListener("click", () => copyText(CONFIG.siteUrl));
+
+			document.getElementById("saveVcfBtn").addEventListener("click", () => {
+				downloadTextFile("AROMA_SUNE.vcf", buildVcf());
+			});
+
+			document.getElementById("shareBtn").addEventListener("click", shareCard);
+
+			document.getElementById("modalClose").addEventListener("click", closeModal);
+			document.getElementById("modal").addEventListener("click", (e) => {
+				if (e.target.id === "modal") closeModal();
+			});
+			window.addEventListener("keydown", (e) => {
+				if (e.key === "Escape") closeModal();
+			});
+
+			renderLangBar();
+			applyLanguage();
+		});
+	</script>
+</body>
+</html>
